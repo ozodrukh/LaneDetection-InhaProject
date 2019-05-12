@@ -69,7 +69,7 @@ def lIRTracerSensor():
 if __name__ == "__main__":
     allowed = {
         ord("w"): forward,
-        ord("s"): back(),
+        ord("s"): back,
         ord("a"): turnLeft,
         ord("d"): turnRight,
         ord("f"): stop
