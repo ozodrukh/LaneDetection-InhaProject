@@ -1,5 +1,7 @@
 from gpiozero import DigitalInputDevice, DistanceSensor, Motor
-from cv2 import waitKey
+
+import sys
+import tty
 
 rightIRSensor = DigitalInputDevice(12)
 leftIRSensor = DigitalInputDevice(16)
@@ -69,14 +71,16 @@ if __name__ == "__main__":
     allowed = {
         ord("w"): forward,
         ord("s"): stop,
-        ord("l"): turnLeft,
-        ord("r"): turnRight,
+        ord("a"): turnLeft,
+        ord("d"): turnRight,
     }
 
     print("Allowed only: {}".format(allowed.keys()))
 
+    tty.setcbreak(sys.stdin)
+
     while True:
-        key = waitKey(1) & 0xFF
+        key = sys.stdin.read(1)
 
         if key in allowed.keys():
             allowed[key]()
