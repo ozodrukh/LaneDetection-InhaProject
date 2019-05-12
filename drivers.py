@@ -66,17 +66,22 @@ def lIRTracerSensor():
 
 
 if __name__ == "__main__":
+    allowed = {
+        ord("w"): forward,
+        ord("s"): stop,
+        ord("l"): turnLeft,
+        ord("r"): turnRight,
+    }
+
+    print("Allowed only: {}".format(allowed.keys()))
+
     while True:
         key = waitKey(0) & 0xFF
 
-        if key == ord('w'):
-            forward()
-        elif key == ord("l"):
-            turnLeft()
-        elif key == ord("r"):
-            turnRight()
-        elif key == ord("s"):
-            stop()
+        print(key)
+
+        if key in allowed.keys():
+            allowed[key]()
         else:
             stop()
-            break
+            exit(0)
