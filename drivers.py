@@ -1,6 +1,6 @@
 from gpiozero import DigitalInputDevice, DistanceSensor, Motor
 
-import sys, cv2
+import sys, cv2, time
 
 rightIRSensor = DigitalInputDevice(12)
 leftIRSensor = DigitalInputDevice(16)
@@ -94,4 +94,5 @@ if __name__ == "__main__":
             cv2.destroyAllWindows()
             exit(0)
 
+        time.sleep(1)
         stop()
