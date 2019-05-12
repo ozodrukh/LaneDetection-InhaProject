@@ -84,6 +84,8 @@ if __name__ == "__main__":
 
         print(key)
 
+        key = ord(key)
+
         if key in allowed.keys():
             allowed[key]()
         elif key == ord("q"):
