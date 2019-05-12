@@ -1,0 +1,6 @@
+venv
+data/*.MOV
+data/outcpp.avi
+.idea
+.idea/*
+*.iml
