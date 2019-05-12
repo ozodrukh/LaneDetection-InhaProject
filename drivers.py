@@ -76,9 +76,7 @@ if __name__ == "__main__":
     print("Allowed only: {}".format(allowed.keys()))
 
     while True:
-        key = waitKey(0) & 0xFF
-
-        print(key)
+        key = waitKey(1) & 0xFF
 
         if key in allowed.keys():
             allowed[key]()
