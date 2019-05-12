@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
         if key in allowed.keys():
             allowed[key]()
-        else:
+        elif key == ord("q"):
             print("exit")
             stop()
             exit(0)
