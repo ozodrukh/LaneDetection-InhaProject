@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import functools, route
 
+#sudo modprobe bcm2835-v4l2 # to enable camera on pi
+
 img_path = "/Users/ozz/Documents/Projects/opencv-py/data/outcpp.avi"
 mask_image = cv2.imread("/Users/ozz/Documents/Projects/opencv-py/data/mask_path", cv2.IMREAD_GRAYSCALE)
 
