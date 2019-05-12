@@ -77,8 +77,6 @@ if __name__ == "__main__":
 
     print("Allowed only: {}".format(allowed.keys()))
 
-    tty.setcbreak(sys.stdin)
-
     while True:
         key = sys.stdin.read(1)
 
