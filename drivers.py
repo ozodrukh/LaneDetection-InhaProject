@@ -1,7 +1,6 @@
 from gpiozero import DigitalInputDevice, DistanceSensor, Motor
 
-import sys
-import tty
+import sys, cv2
 
 rightIRSensor = DigitalInputDevice(12)
 leftIRSensor = DigitalInputDevice(16)
@@ -77,16 +76,19 @@ if __name__ == "__main__":
 
     print("Allowed only: {}".format(allowed.keys()))
 
-    while True:
-        key = sys.stdin.read(1)
+    camera = cv2.VideoCapture(0)
 
-        print(key)
+    while camera.isOpened():
+        _, frame = camera.read()
 
-        key = ord(key)
+        cv2.imshow("camera", frame)
+
+        key = cv2.waitKey(0) & 0xFF
 
         if key in allowed.keys():
             allowed[key]()
         elif key == ord("q"):
-            print("exit")
             stop()
+            camera.release()
+            cv2.destroyAllWindows()
             exit(0)
