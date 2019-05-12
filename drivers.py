@@ -82,6 +82,8 @@ if __name__ == "__main__":
     while True:
         key = sys.stdin.read(1)
 
+        print(key)
+
         if key in allowed.keys():
             allowed[key]()
         elif key == ord("q"):
