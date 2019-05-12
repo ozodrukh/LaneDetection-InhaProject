@@ -93,3 +93,5 @@ if __name__ == "__main__":
             camera.release()
             cv2.destroyAllWindows()
             exit(0)
+
+        stop()
