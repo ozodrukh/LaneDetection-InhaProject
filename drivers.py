@@ -11,7 +11,7 @@ leftIRTracerSensor = DigitalInputDevice(8)
 
 # DisatanceSensor pin   21 T
 #                      20 E
-distanceSensor = DistanceSensor(21, 20)
+distanceSensor = DistanceSensor(26, 19)
 
 # Motors
 motor_left = Motor(18, 23)
