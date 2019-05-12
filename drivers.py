@@ -83,7 +83,7 @@ if __name__ == "__main__":
 
         cv2.imshow("camera", frame)
 
-        key = cv2.waitKey(0) & 0xFF
+        key = cv2.waitKey(1) & 0xFF
 
         if key in allowed.keys():
             allowed[key]()
