@@ -5,7 +5,7 @@ import functools, route
 img_path = "/Users/ozz/Documents/Projects/opencv-py/data/outcpp.avi"
 mask_image = cv2.imread("/Users/ozz/Documents/Projects/opencv-py/data/mask_path", cv2.IMREAD_GRAYSCALE)
 
-video = cv2.VideoCapture(img_path)
+video = cv2.VideoCapture(0)
 
 size = (300, 300)
 
