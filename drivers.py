@@ -125,4 +125,4 @@ if __name__ == "__main__":
             exit(0)
 
         time.sleep(0.1)
-        # stop()
+        stop()
