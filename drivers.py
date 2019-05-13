@@ -106,7 +106,7 @@ if __name__ == "__main__":
 
         cur_value = motor_configs[config] * 100
         cv2.createTrackbar(config, "camera", cur_value, 100, update_config)
-        cv2.setTrackbarMin(config, "camera", -100)
+        cv2.setTrackbarMin(config, "camera", 0)
         cv2.setTrackbarMax(config, "camera", 100)
 
     while camera.isOpened():
