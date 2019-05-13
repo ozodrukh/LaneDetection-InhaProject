@@ -34,12 +34,12 @@ def back(left=1.0, right=1.0):
     sensors["motor"]["right"].backward(right)
 
 
-def turn_right(x=1.0, y=1.0):
+def turn_left(x=1.0, y=1.0):
     sensors["motor"]["left"].forward(x)
     sensors["motor"]["right"].backward(y)
 
 
-def turn_left(back=1.0, forward=1.0):
+def turn_right(back=1.0, forward=1.0):
     sensors["motor"]["left"].backward(back)
     sensors["motor"]["right"].forward(forward)
 
