@@ -31,8 +31,9 @@ def get_distance():
     return sensors["distance"].distance
 
 
-def forward(left=motor_configs["forward.x"],
-            right=motor_configs["forward.y"]):
+def forward():
+    left = motor_configs["forward.x"],
+    right = motor_configs["forward.y"]
 
     print("left:{}, right={}".format(left, right))
 
@@ -40,20 +41,26 @@ def forward(left=motor_configs["forward.x"],
     sensors["motor"]["right"].forward(right)
 
 
-def back(left=motor_configs["back.x"],
-         right=motor_configs["back.y"]):
+def back():
+    left = motor_configs["back.x"],
+    right = motor_configs["back.y"]
+
     sensors["motor"]["left"].backward(left)
     sensors["motor"]["right"].backward(right)
 
 
-def turn_left(x=motor_configs["left.x"],
-              y=motor_configs["left.y"]):
+def turn_left():
+    x = motor_configs["left.x"],
+    y = motor_configs["left.y"]
+
     sensors["motor"]["left"].forward(x)
     sensors["motor"]["right"].backward(y)
 
 
-def turn_right(back=motor_configs["right.x"],
-               forward=motor_configs["right.y"]):
+def turn_right():
+    back = motor_configs["right.x"],
+    forward = motor_configs["right.y"]
+
     sensors["motor"]["left"].backward(back)
     sensors["motor"]["right"].forward(forward)
 
@@ -108,6 +115,7 @@ if __name__ == "__main__":
 
     fourcc = cv2.VideoWriter_fourcc(*'MJPG')
     video_output = cv2.VideoWriter('./session.avi', fourcc, 30.0, (640, 480))
+
 
     def set_motor_config(config_name, value):
         motor_configs[config_name] = value / 100
