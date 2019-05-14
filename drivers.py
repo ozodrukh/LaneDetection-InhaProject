@@ -33,6 +33,9 @@ def get_distance():
 
 def forward(left=motor_configs["forward.x"],
             right=motor_configs["forward.y"]):
+
+    print("left:{}, right={}".format(left, right))
+
     sensors["motor"]["left"].forward(left)
     sensors["motor"]["right"].forward(right)
 
