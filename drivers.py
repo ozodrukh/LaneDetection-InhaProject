@@ -30,26 +30,26 @@ def get_distance():
     return sensors["distance"].distance
 
 
-def forward(left=motor_configs["motor"]["left"],
-            right=motor_configs["motor"]["right"]):
+def forward(left=motor_configs["forward"]["x"],
+            right=motor_configs["forward"]["y"]):
     sensors["motor"]["left"].forward(left)
     sensors["motor"]["right"].forward(right)
 
 
-def back(left=motor_configs["motor"]["left"],
-         right=motor_configs["motor"]["right"]):
+def back(left=motor_configs["back"]["x"],
+         right=motor_configs["back"]["y"]):
     sensors["motor"]["left"].backward(left)
     sensors["motor"]["right"].backward(right)
 
 
-def turn_left(x=motor_configs["motor"]["left"],
-              y=motor_configs["motor"]["right"]):
+def turn_left(x=motor_configs["left"]["x"],
+              y=motor_configs["left"]["y"]):
     sensors["motor"]["left"].forward(x)
     sensors["motor"]["right"].backward(y)
 
 
-def turn_right(back=motor_configs["motor"]["left"],
-            forward=motor_configs["motor"]["right"]):
+def turn_right(back=motor_configs["right"]["x"],
+            forward=motor_configs["right"]["y"]):
     sensors["motor"]["left"].backward(back)
     sensors["motor"]["right"].forward(forward)
 
