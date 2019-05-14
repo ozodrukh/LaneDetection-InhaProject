@@ -17,6 +17,12 @@ sensors = {
     }
 }
 
+motor_configs = {}
+
+for side in ["left", "right", "forward", "back"]:
+    motor_configs[side + ".x"] = 1
+    motor_configs[side + ".y"] = 1
+
 forwardPin = False
 
 
@@ -24,22 +30,26 @@ def get_distance():
     return sensors["distance"].distance
 
 
-def forward(left=1.0, right=1.0):
+def forward(left=motor_configs["motor"]["left"],
+            right=motor_configs["motor"]["right"]):
     sensors["motor"]["left"].forward(left)
     sensors["motor"]["right"].forward(right)
 
 
-def back(left=1.0, right=1.0):
+def back(left=motor_configs["motor"]["left"],
+         right=motor_configs["motor"]["right"]):
     sensors["motor"]["left"].backward(left)
     sensors["motor"]["right"].backward(right)
 
 
-def turn_left(x=1.0, y=1.0):
+def turn_left(x=motor_configs["motor"]["left"],
+              y=motor_configs["motor"]["right"]):
     sensors["motor"]["left"].forward(x)
     sensors["motor"]["right"].backward(y)
 
 
-def turn_right(back=1.0, forward=1.0):
+def turn_right(back=motor_configs["motor"]["left"],
+            forward=motor_configs["motor"]["right"]):
     sensors["motor"]["left"].backward(back)
     sensors["motor"]["right"].forward(forward)
 
@@ -64,12 +74,6 @@ def rIRTracerSensor():
 def lIRTracerSensor():
     return sensors["trace"]["left"].value
 
-
-motor_configs = {}
-
-for side in ["left", "right", "forward", "back"]:
-    motor_configs[side + ".x"] = 1
-    motor_configs[side + ".y"] = 1
 
 if __name__ == "__main__":
     import cv2
@@ -98,8 +102,10 @@ if __name__ == "__main__":
     camera.set(3, width)
     camera.set(4, height)
 
+
     def set_motor_config(config_name, value):
         motor_configs[config_name] = value / 100
+
 
     for config in motor_configs:
         update_config = bind(set_motor_config, config)

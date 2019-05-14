@@ -2,14 +2,16 @@ import cv2
 import numpy as np
 import functools, route
 
-#sudo modprobe bcm2835-v4l2 # to enable camera on pi
+# sudo modprobe bcm2835-v4l2 # to enable camera on pi
 
 img_path = "/Users/ozz/Documents/Projects/opencv-py/data/outcpp.avi"
 mask_image = cv2.imread("/Users/ozz/Documents/Projects/opencv-py/data/mask_path", cv2.IMREAD_GRAYSCALE)
 
-video = cv2.VideoCapture(0)
-
 size = (300, 300)
+
+camera = cv2.VideoCapture(img_path)
+camera.set(cv2.CAP_PROP_FRAME_WIDTH, size[0])
+camera.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
 
 params = {
     'morph': 'dilate',
@@ -72,8 +74,33 @@ def render(frame):
         LINE_COLOR_RGB_RANGE_HIGHER
     )
 
-    # contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
+    find_lines_using_Canny_and_HoughLines(original, morphed)
 
+    cv2.imshow("frame", original)
+    cv2.imshow("morphed", morphed)
+
+
+def find_lines_using_contours(frame, morphed):
+    contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
+
+    max_length = 0
+
+    for i in range(len(contours)):
+        length = cv2.arcLength(contours[i], False)
+        if length > max_length:
+            max_length = length
+
+    for i in range(len(contours)):
+        length = cv2.arcLength(contours[i], False)
+        if length < 150:
+            continue
+
+        cv2.drawContours(frame, contours, i, (20, int(255 * length / max_length), int(255 * length / max_length)))
+
+    route.find_lines_on_contours(frame, contours, lambda rect: rect[1][0] > 10)
+
+
+def find_lines_using_Canny_and_HoughLines(frame, morphed):
     morphed = cv2.Canny(morphed, 100, 200)
 
     lines = cv2.HoughLinesP(
@@ -85,31 +112,7 @@ def render(frame):
         maxLineGap=params['hough.max_line_gap']
     )
 
-    # original = (mask[:, :, None].astype(original.dtype))
-
-    # max_length = 0
-    #
-    # for i in range(len(contours)):
-    #     length = cv2.arcLength(contours[i], False)
-    #     if length > max_length:
-    #         max_length = length
-    #
-    # for i in range(len(contours)):
-    #     length = cv2.arcLength(contours[i], False)
-    #     if length < 150:
-    #         continue
-    #
-    #     cv2.drawContours(original, contours, i, (20, int(255 * length / max_length), int(255 * length / max_length)))
-    #
-    # route.find_lanes(original, contours, lambda rect: rect[1][0] > 10)
-
-    if lines is not None and len(lines) > 0:
-        for line in lines:
-            x1, y1, x2, y2 = line[0]
-            cv2.line(original, (x1, y1), (x2, y2), (0, 255, 0), 3)
-
-    cv2.imshow("frame", original)
-    cv2.imshow("morphed", morphed)
+    route.find_lines_on_hough_lines(frame, lines)
 
 
 def morph_type_changed(morph_type):
@@ -130,7 +133,7 @@ def erode_changed(v):
 
 
 def main():
-    if not video.isOpened():
+    if not camera.isOpened():
         print("Video not opened")
         return
 
@@ -143,15 +146,17 @@ def main():
     attach_options_bar()
     create_hough_line_editor()
 
-    while video.isOpened():
-        ret, frame = video.read()
+    while camera.isOpened():
+        ret, frame = camera.read()
 
         if frame.size == 0:
             break
 
-        #frame = rotateImage(frame, -90)
+        # frame = rotateImage(frame, -90)
+        #
 
-        frame = cv2.resize(frame, size, cv2.INTER_NEAREST)
+        if frame.shape[0] != 300 and frame.shape[1] != 300:
+            frame = cv2.resize(frame, size, cv2.INTER_NEAREST)
 
         bounds = [
             int(2 / 5 * size[1]), 0,
@@ -167,6 +172,8 @@ def main():
 
         render(frame)
 
+        cv2.imshow("window", frame)
+
         try:
             key = cv2.waitKey(1)
 
@@ -179,7 +186,7 @@ def main():
         except KeyboardInterrupt:
             pass
 
-    video.release()
+    camera.release()
 
 
 def attach_options_bar():

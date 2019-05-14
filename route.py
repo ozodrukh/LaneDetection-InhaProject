@@ -25,7 +25,14 @@ def intify(pt):
     return int(pt[0]), int(pt[1])
 
 
-def find_lanes(frame, contours, filter_rect):
+def find_lines_on_hough_lines(frame, lines):
+    if lines is not None and len(lines) > 0:
+        for line in lines:
+            x1, y1, x2, y2 = line[0]
+            cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 0), 3)
+
+
+def find_lines_on_contours(frame, contours, filter_rect):
     frame_size = (frame.shape[1], frame.shape[0])
     center_point = intify((frame_size[0] / 2, frame_size[1]))
 
