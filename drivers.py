@@ -118,7 +118,7 @@ if __name__ == "__main__":
         cv2.setTrackbarMin(config, "camera", 0)
         cv2.setTrackbarMax(config, "camera", 100)
 
-    action_time = 0
+    action_time = None
     action_timeout = 220
 
     while camera.isOpened():
@@ -140,5 +140,5 @@ if __name__ == "__main__":
             cv2.destroyAllWindows()
             exit(0)
 
-        if action_time > 0 and (datetime.datetime.now() - action_time).microseconds > action_timeout:
+        if action_time is not None and (datetime.datetime.now() - action_time).microseconds > action_timeout:
             stop()
