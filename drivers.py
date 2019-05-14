@@ -119,7 +119,7 @@ if __name__ == "__main__":
         cv2.setTrackbarMax(config, "camera", 100)
 
     action_time = None
-    action_timeout = 220
+    action_timeout = 1000
 
     while camera.isOpened():
         _, frame = camera.read()
@@ -132,6 +132,7 @@ if __name__ == "__main__":
         if key in allowed.keys():
             action_time = datetime.datetime.now()
             allowed[key]()
+            # print(allowed[key])
 
         elif key == ord("q"):
             stop()
@@ -142,3 +143,4 @@ if __name__ == "__main__":
 
         if action_time is not None and (datetime.datetime.now() - action_time).microseconds > action_timeout:
             stop()
+            action_time = None
