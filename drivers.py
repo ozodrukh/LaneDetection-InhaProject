@@ -1,5 +1,6 @@
 from gpiozero import DigitalInputDevice, DistanceSensor, Motor
 from functools import partial as bind
+import datetime
 
 sensors = {
     "ir": {
@@ -49,7 +50,7 @@ def turn_left(x=motor_configs["left.x"],
 
 
 def turn_right(back=motor_configs["right.x"],
-            forward=motor_configs["right.y"]):
+               forward=motor_configs["right.y"]):
     sensors["motor"]["left"].backward(back)
     sensors["motor"]["right"].forward(forward)
 
@@ -102,6 +103,8 @@ if __name__ == "__main__":
     camera.set(3, width)
     camera.set(4, height)
 
+    fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+    video_output = cv2.VideoWriter('./session.avi', fourcc, 30.0, (640, 480))
 
     def set_motor_config(config_name, value):
         motor_configs[config_name] = value / 100
@@ -115,20 +118,27 @@ if __name__ == "__main__":
         cv2.setTrackbarMin(config, "camera", 0)
         cv2.setTrackbarMax(config, "camera", 100)
 
+    action_time = 0
+    action_timeout = 220
+
     while camera.isOpened():
         _, frame = camera.read()
 
+        video_output.write(frame)
         cv2.imshow("camera", frame)
 
         key = cv2.waitKey(1) & 0xFF
 
         if key in allowed.keys():
+            action_time = datetime.datetime.now()
             allowed[key]()
+
         elif key == ord("q"):
             stop()
             camera.release()
+            video_output.release()
             cv2.destroyAllWindows()
             exit(0)
 
-        time.sleep(0.1)
-        stop()
+        if action_time > 0 and (datetime.datetime.now() - action_time).microseconds > action_timeout:
+            stop()
