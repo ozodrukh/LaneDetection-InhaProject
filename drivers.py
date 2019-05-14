@@ -2,19 +2,19 @@ from gpiozero import DigitalInputDevice, DistanceSensor, Motor
 from functools import partial as bind
 
 sensors = {
-    "ir": {
-        "left": DigitalInputDevice(12),
-        "right": DigitalInputDevice(16)
-    },
-    "trace": {
-        "left": DigitalInputDevice(7),
-        "right": DigitalInputDevice(8)
-    },
-    "distance": DistanceSensor(26, 19),
-    "motor": {
-        'left': Motor(18, 23),
-        'right': Motor(24, 25)
-    }
+    # "ir": {
+    #     "left": DigitalInputDevice(12),
+    #     "right": DigitalInputDevice(16)
+    # },
+    # "trace": {
+    #     "left": DigitalInputDevice(7),
+    #     "right": DigitalInputDevice(8)
+    # },
+    # "distance": DistanceSensor(26, 19),
+    # "motor": {
+    #     'left': Motor(18, 23),
+    #     'right': Motor(24, 25)
+    # }
 }
 
 motor_configs = {}
@@ -30,26 +30,26 @@ def get_distance():
     return sensors["distance"].distance
 
 
-def forward(left=motor_configs["forward"]["x"],
-            right=motor_configs["forward"]["y"]):
+def forward(left=motor_configs["forward.x"],
+            right=motor_configs["forward.y"]):
     sensors["motor"]["left"].forward(left)
     sensors["motor"]["right"].forward(right)
 
 
-def back(left=motor_configs["back"]["x"],
-         right=motor_configs["back"]["y"]):
+def back(left=motor_configs["back.x"],
+         right=motor_configs["back.y"]):
     sensors["motor"]["left"].backward(left)
     sensors["motor"]["right"].backward(right)
 
 
-def turn_left(x=motor_configs["left"]["x"],
-              y=motor_configs["left"]["y"]):
+def turn_left(x=motor_configs["left.x"],
+              y=motor_configs["left.y"]):
     sensors["motor"]["left"].forward(x)
     sensors["motor"]["right"].backward(y)
 
 
-def turn_right(back=motor_configs["right"]["x"],
-            forward=motor_configs["right"]["y"]):
+def turn_right(back=motor_configs["right.x"],
+            forward=motor_configs["right.y"]):
     sensors["motor"]["left"].backward(back)
     sensors["motor"]["right"].forward(forward)
 
