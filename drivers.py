@@ -119,7 +119,7 @@ if __name__ == "__main__":
         cv2.setTrackbarMax(config, "camera", 100)
 
     action_time = None
-    action_timeout = 1000
+    action_timeout = 500
 
     while camera.isOpened():
         _, frame = camera.read()
