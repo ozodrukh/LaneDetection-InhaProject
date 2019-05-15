@@ -86,7 +86,7 @@ def find_lines_using_contours(frame, morphed):
     if r is None or len(r) != 2:
         cv2.putText(frame,
                     "No Contours",
-                    tuple(int(size[0] / 2), 0),
+                    (int(size[0] / 2), 0),
                     cv2.FONT_HERSHEY_PLAIN,
                     1,
                     (255, 255, 255))
