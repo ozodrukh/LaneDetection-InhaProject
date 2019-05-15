@@ -7,11 +7,11 @@ import functools, route
 img_path = "/Users/ozz/Documents/Projects/opencv-py/data/outcpp.avi"
 mask_image = cv2.imread("/Users/ozz/Documents/Projects/opencv-py/data/mask_path", cv2.IMREAD_GRAYSCALE)
 
-size = (300, 300)
+size = (600, 600)
 
-camera = cv2.VideoCapture(img_path)
-camera.set(cv2.CAP_PROP_FRAME_WIDTH, size[0])
-camera.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
+camera = cv2.VideoCapture(0)
+#camera.set(cv2.CAP_PROP_FRAME_WIDTH, size[0])
+#camera.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
 
 params = {
     'morph': 'dilate',
@@ -74,7 +74,8 @@ def render(frame):
         LINE_COLOR_RGB_RANGE_HIGHER
     )
 
-    find_lines_using_Canny_and_HoughLines(original, morphed)
+    #find_lines_using_Canny_and_HoughLines(original, morphed)
+    find_lines_using_contours(original, morphed)
 
     cv2.imshow("frame", original)
     cv2.imshow("morphed", morphed)
@@ -155,6 +156,7 @@ def main():
         # frame = rotateImage(frame, -90)
         #
 
+        #cv2.imshow("window", frame)
         if frame.shape[0] != 300 and frame.shape[1] != 300:
             frame = cv2.resize(frame, size, cv2.INTER_NEAREST)
 
@@ -172,7 +174,7 @@ def main():
 
         render(frame)
 
-        cv2.imshow("window", frame)
+        cv2.imshow("resized", frame)
 
         try:
             key = cv2.waitKey(1)
