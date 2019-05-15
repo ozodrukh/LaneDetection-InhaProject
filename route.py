@@ -62,6 +62,8 @@ def find_lines_on_contours(frame, contours, filter_rect):
 
     cv2.line(frame, center_point, (center_point[0], 0), (80, 80, 80), 2)
 
+    contours_data = []
+
     for i in range(len(contours)):
         rect = cv2.minAreaRect(contours[i])
 
@@ -83,45 +85,82 @@ def find_lines_on_contours(frame, contours, filter_rect):
         except Exception:
             continue
 
-        cv2.line(frame, intify(center_point), intify(point), (255, 255, 255), 5)
+        # print(angel(line_point))
 
-        cv2.line(frame,
-                 line_point[0],
-                 line_point[1],
-                 (255, 255, 255),
-                 5)
+        contours_data.append({
+            "index": i,
+            "bounds": rect,
+            "angel": angel(line_point),
+            "contour_line": contours[i],
+            "center_point": center_point,
+            "line_point": line_point,
+            "cross_point": point,
+            "width": rect[1][0],
+            "distance": distance(center_point, bounds[3])
+        })
 
-        print(angel(line_point))
+        continue
 
-        box = cv2.boxPoints(rect)
+    target = None
 
-        for i in range(4):
-            x, y = box[i]
-            x1, y1 = box[(i + 1) % 4]
+    for data in contours_data:
+        if data["width"] < 100:
+            continue
 
-            cv2.line(frame, (x, y), (x1, y1), (0, 255, 0), 1)
+        if target is None or target["distance"] > data["distance"]:
+            target = data
 
-        # dist_point = get_line_distortion(contours[i], rect[2])
+        # print("index: {}, angel: {}, distance: {}, width: {}".format(
+        #     data["index"],
+        #     data["angel"],
+        #     data["distance"],
+        #     data["width"],
+        # ))
 
-        # cv2.line(frame, center_point, intify(rect[0]), (0, 255, 0), 1)
+    if target is None:
+        print("line not found")
+        return
 
-        if rect[2] > 0:
-            turn = "left"
-        elif rect[2] > -40:
-            turn = "right"
-        else:
-            turn = "straight"
+    rect = target["bounds"]
+    rect_point = intify(target["line_point"][1])
 
-        if frame_size[0] > rect_point[0] > 100:
-            text_point = (center_point[0] - 50, rect_point[1])
-        else:
-            text_point = rect_point
+    box = cv2.boxPoints(rect)
 
-        cv2.putText(frame,
-                    "t: {3}, d: {0}, w: {1}, a={2}".format(int(d), int(rect[1][0]), int(rect[2]), turn),
-                    text_point,
-                    cv2.FONT_HERSHEY_PLAIN,
-                    0.6,
-                    (255, 255, 255))
+    for i in range(4):
+        x, y = box[i]
+        x1, y1 = box[(i + 1) % 4]
 
-        break;
+        cv2.line(frame, (x, y), (x1, y1), (0, 255, 0), 1)
+
+    cv2.line(frame, intify(center_point), intify(target["cross_point"]), (255, 255, 255), 5)
+
+    cv2.line(frame,
+             target["line_point"][0],
+             target["line_point"][1],
+             (255, 255, 255),
+             5)
+
+    # dist_point = get_line_distortion(contours[i], rect[2])
+
+    # cv2.line(frame, center_point, intify(rect[0]), (0, 255, 0), 1)
+
+    print(target["angel"])
+
+    if target["angel"] > 0:
+        turn = "left"
+    elif target["angel"] > -60:
+        turn = "right"
+    else:
+        turn = "straight"
+
+    if frame_size[0] > rect_point[0] > 100:
+        text_point = (center_point[0] - 50, rect_point[1])
+    else:
+        text_point = rect_point
+
+    cv2.putText(frame,
+                "t: {3}, d: {0}, w: {1}, a={2}".format(int(d), int(rect[1][0]), int(rect[2]), turn),
+                text_point,
+                cv2.FONT_HERSHEY_PLAIN,
+                0.6,
+                (255, 255, 255))
