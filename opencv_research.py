@@ -84,6 +84,7 @@ def find_lines_using_contours(frame, morphed):
     r = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
 
     if r is None or len(r) != 2:
+        print("no_contours")
         return
 
     contours = r[0]
