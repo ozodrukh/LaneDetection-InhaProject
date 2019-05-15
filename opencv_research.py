@@ -9,9 +9,8 @@ mask_image = cv2.imread("/Users/ozz/Documents/Projects/opencv-py/data/mask_path"
 
 size = (600, 600)
 
-camera = cv2.VideoCapture(0)
-#camera.set(cv2.CAP_PROP_FRAME_WIDTH, size[0])
-#camera.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
+# camera.set(cv2.CAP_PROP_FRAME_WIDTH, size[0])
+# camera.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
 
 params = {
     'morph': 'dilate',
@@ -74,7 +73,7 @@ def render(frame):
         LINE_COLOR_RGB_RANGE_HIGHER
     )
 
-    #find_lines_using_Canny_and_HoughLines(original, morphed)
+    # find_lines_using_Canny_and_HoughLines(original, morphed)
     find_lines_using_contours(original, morphed)
 
     cv2.imshow("frame", original)
@@ -133,7 +132,27 @@ def erode_changed(v):
         render(params['current_frame'])
 
 
+def normalize_frame_for_lane_detection(frame):
+    if frame.shape[0] != 300 and frame.shape[1] != 300:
+        frame = cv2.resize(frame, size, cv2.INTER_NEAREST)
+
+    bounds = [
+        int(3 / 5 * size[1]), 0,
+        size[0], size[1]
+    ]
+
+    frame = frame[bounds[0]:bounds[2], bounds[1]:bounds[3]]
+
+    params['kernel_max_width'] = size[0]
+    params['kernel_width'] = int(params['kernel_max_width'] / 40)
+
+    params['current_frame'] = frame
+    return frame
+
+
 def main():
+    camera = cv2.VideoCapture(0)
+
     if not camera.isOpened():
         print("Video not opened")
         return
@@ -156,21 +175,8 @@ def main():
         # frame = rotateImage(frame, -90)
         #
 
-        #cv2.imshow("window", frame)
-        if frame.shape[0] != 300 and frame.shape[1] != 300:
-            frame = cv2.resize(frame, size, cv2.INTER_NEAREST)
-
-        bounds = [
-            int(2 / 5 * size[1]), 0,
-            size[0], size[1]
-        ]
-
-        frame = frame[bounds[0]:bounds[2], bounds[1]:bounds[3]]
-
-        params['kernel_max_width'] = size[0]
-        params['kernel_width'] = int(params['kernel_max_width'] / 40)
-
-        params['current_frame'] = frame
+        # cv2.imshow("window", frame)
+        frame = normalize_frame_for_lane_detection(frame)
 
         render(frame)
 
@@ -277,7 +283,16 @@ def create_hsv_bar():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
+    left_line = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 1.23.41 PM.png"
+    straight_line = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 1.23.50 PM.png"
+    right_line = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 4.09.58 PM.png"
+    size = (300, 300)
+
+    params['kernel_max_width'] = size[0]
+    params['kernel_width'] = int(params['kernel_max_width'] / 40)
+
+    render(cv2.imread(right_line, cv2.IMREAD_COLOR))
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()

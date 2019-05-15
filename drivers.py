@@ -1,6 +1,7 @@
 from gpiozero import DigitalInputDevice, DistanceSensor, Motor
 from functools import partial as bind
 import datetime
+import keyboard
 
 sensors = {
     "ir": {

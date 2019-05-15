@@ -1,4 +1,4 @@
-from math import sqrt, pow
+from math import sqrt, pow, atan, pi
 
 import cv2
 
@@ -7,18 +7,12 @@ def distance(pt1, pt2):
     return sqrt(pow(pt2[0] - pt1[0], 2) + pow(pt2[1] - pt1[1], 2))
 
 
-def get_line_distortion(cnt, angel):
+def get_bounds(cnt):
     leftmost = tuple(cnt[cnt[:, :, 0].argmin()][0])
     rightmost = tuple(cnt[cnt[:, :, 0].argmax()][0])
-
-    if angel >= 0:
-        return rightmost
-    else:
-        return leftmost
-
-
-def get_bottom_line(cnt):
-    return tuple(cnt[cnt[:, :, 1].argmax()][0])
+    topmost = tuple(cnt[cnt[:, :, 1].argmin()][0])
+    bottommost = tuple(cnt[cnt[:, :, 1].argmax()][0])
+    return [leftmost, topmost, rightmost, bottommost]
 
 
 def intify(pt):
@@ -30,6 +24,36 @@ def find_lines_on_hough_lines(frame, lines):
         for line in lines:
             x1, y1, x2, y2 = line[0]
             cv2.line(frame, (x1, y1), (x2, y2), (0, 255, 0), 3)
+
+
+def get_contour_point(contours, index, point_index):
+    line = contours[index][point_index, 0]
+    return line[0], line[1]
+
+
+def line_intersection(line1, line2):
+    xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
+    ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1])  # Typo was here
+
+    def det(a, b):
+        return a[0] * b[1] - a[1] * b[0]
+
+    div = det(xdiff, ydiff)
+    if div == 0:
+        raise Exception('lines do not intersect')
+
+    d = (det(*line1), det(*line2))
+    x = det(d, xdiff) / div
+    y = det(d, ydiff) / div
+    return x, y
+
+
+def angel(line):
+    return angel2(line[0][0], line[0][1], line[1][0], line[1][1])
+
+
+def angel2(x1, y1, x2, y2):
+    return atan((y2 - y1) / (x2 - x1)) / pi * 180
 
 
 def find_lines_on_contours(frame, contours, filter_rect):
@@ -44,12 +68,30 @@ def find_lines_on_contours(frame, contours, filter_rect):
         if not filter_rect(rect):
             continue
 
-        rect_point = intify(get_bottom_line(contours[i]))
+        bounds = get_bounds(contours[i])
+        rect_point = intify(bounds[3])
 
         d = distance(center_point, rect_point)
 
         if int(rect[2]) == 0 and rect[1][0] < 5:
             continue
+
+        line_point = [bounds[1], bounds[3]]
+
+        try:
+            point = line_intersection([(center_point[0], 0), center_point], line_point)
+        except Exception:
+            continue
+
+        cv2.line(frame, intify(center_point), intify(point), (255, 255, 255), 5)
+
+        cv2.line(frame,
+                 line_point[0],
+                 line_point[1],
+                 (255, 255, 255),
+                 5)
+
+        print(angel(line_point))
 
         box = cv2.boxPoints(rect)
 
@@ -61,7 +103,7 @@ def find_lines_on_contours(frame, contours, filter_rect):
 
         # dist_point = get_line_distortion(contours[i], rect[2])
 
-        cv2.line(frame, center_point, intify(rect[0]), (0, 255, 0), 1)
+        # cv2.line(frame, center_point, intify(rect[0]), (0, 255, 0), 1)
 
         if rect[2] > 0:
             turn = "left"
@@ -81,3 +123,5 @@ def find_lines_on_contours(frame, contours, filter_rect):
                     cv2.FONT_HERSHEY_PLAIN,
                     0.6,
                     (255, 255, 255))
+
+        break;
