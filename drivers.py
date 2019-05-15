@@ -57,11 +57,11 @@ def turn_left():
 
 
 def turn_right():
-    back = motor_configs["right.x"]
-    forward = motor_configs["right.y"]
+    x = motor_configs["right.x"]
+    y = motor_configs["right.y"]
 
-    sensors["motor"]["left"].backward(back)
-    sensors["motor"]["right"].forward(forward)
+    sensors["motor"]["left"].backward(x)
+    sensors["motor"]["right"].forward(y)
 
 
 def stop():
