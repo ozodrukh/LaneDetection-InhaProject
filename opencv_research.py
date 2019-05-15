@@ -283,16 +283,16 @@ def create_hsv_bar():
 
 
 if __name__ == "__main__":
-    # main()
-    left_line = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 1.23.41 PM.png"
-    straight_line = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 1.23.50 PM.png"
-    right_line = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 4.32.18 PM.png"
-    size = (300, 300)
-
-    params['kernel_max_width'] = size[0]
-    params['kernel_width'] = int(params['kernel_max_width'] / 40)
-
-    render(cv2.imread(straight_line, cv2.IMREAD_COLOR))
+    main()
+    # left_line = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 1.23.41 PM.png"
+    # straight_line = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 1.23.50 PM.png"
+    # right_line = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 4.32.18 PM.png"
+    # size = (300, 300)
+    #
+    # params['kernel_max_width'] = size[0]
+    # params['kernel_width'] = int(params['kernel_max_width'] / 40)
+    #
+    # render(cv2.imread(straight_line, cv2.IMREAD_COLOR))
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
