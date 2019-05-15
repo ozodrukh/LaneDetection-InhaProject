@@ -144,14 +144,14 @@ def find_lines_on_contours(frame, contours, filter_rect):
 
     # cv2.line(frame, center_point, intify(rect[0]), (0, 255, 0), 1)
 
-    print(target["angel"])
-
     if target["angel"] > 0:
         turn = "left"
     elif target["angel"] > -60:
         turn = "right"
     else:
         turn = "straight"
+
+    print("angel={}, turn={}".format(target["angel"], turn))
 
     if frame_size[0] > rect_point[0] > 100:
         text_point = (center_point[0] - 50, rect_point[1])
