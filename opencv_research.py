@@ -81,7 +81,12 @@ def render(frame):
 
 
 def find_lines_using_contours(frame, morphed):
-    contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
+    r = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
+
+    if r is None or len(r) != 2:
+        return
+
+    contours = r[0]
 
     max_length = 0
 
