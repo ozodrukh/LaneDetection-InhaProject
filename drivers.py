@@ -41,7 +41,7 @@ def forward():
 
 
 def back():
-    left = motor_configs["back.x"],
+    left = motor_configs["back.x"]
     right = motor_configs["back.y"]
 
     sensors["motor"]["left"].backward(left)
@@ -49,7 +49,7 @@ def back():
 
 
 def turn_left():
-    x = motor_configs["left.x"],
+    x = motor_configs["left.x"]
     y = motor_configs["left.y"]
 
     sensors["motor"]["left"].forward(x)
@@ -57,7 +57,7 @@ def turn_left():
 
 
 def turn_right():
-    back = motor_configs["right.x"],
+    back = motor_configs["right.x"]
     forward = motor_configs["right.y"]
 
     sensors["motor"]["left"].backward(back)
