@@ -131,6 +131,8 @@ if __name__ == "__main__":
     action_time = None
     action_timeout = 250
 
+    direction = []
+
     while camera.isOpened():
         _, frame = camera.read()
 
@@ -141,7 +143,11 @@ if __name__ == "__main__":
 
         if key in allowed.keys():
             action_time = datetime.datetime.now()
-            allowed[key]()
+
+            if key not in direction:
+                direction.append(key)
+                allowed[key]()
+
             print(allowed[key])
 
         elif key == ord("q"):
@@ -154,4 +160,5 @@ if __name__ == "__main__":
         if action_time is not None and (datetime.datetime.now() - action_time).microseconds / 1000 > action_timeout:
             stop()
             print("stop")
+            direction.clear()
             action_time = None
