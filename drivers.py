@@ -118,7 +118,7 @@ if __name__ == "__main__":
 
 
     def set_motor_config(config_name, value):
-        motor_configs[config_name] = value / 100
+        motor_configs[config_name] = value[0] / 100
 
 
     for config in motor_configs:
