@@ -72,14 +72,21 @@ def trafficsSingDetection(img):
 
 
 def rectangle(dilate, img, i):
-    cascade_circle = cv2.CascadeClassifier('cascade_circle_lgb.xml')
-    cascade_left = cv2.CascadeClassifier('cascade_left_lgb.xml')
-    cascade_parking = cv2.CascadeClassifier('cascade_parking_lgb.xml')
-    cascade_right = cv2.CascadeClassifier('cascade_right.xml')
-    cascade_stop = cv2.CascadeClassifier('cascade_stop_lgb.xml')
-    cascade_stop_2=cv2.CascadeClassifier('cascade_stop.xml')
-    cascade_pedestrian=cv2.CascadeClassifier('pedestrian.xml')
-    cascades = (cascade_right, cascade_parking, cascade_left, cascade_circle, cascade_stop,cascade_stop_2,cascade_pedestrian)
+    cascade_circle = cv2.CascadeClassifier('/data/cascade_circle_lgb.xml')
+    cascade_left = cv2.CascadeClassifier('/data/cascade_left_lgb.xml')
+    cascade_parking = cv2.CascadeClassifier('/data/cascade_parking_lgb.xml')
+    cascade_right = cv2.CascadeClassifier('/data/cascade_right.xml')
+    cascade_stop = cv2.CascadeClassifier('/data/cascade_stop_lgb.xml')
+    cascade_stop_2 = cv2.CascadeClassifier('/data/cascade_stop.xml')
+    cascade_pedestrian = cv2.CascadeClassifier('/data/pedestrian.xml')
+    cascade_trafficlight = cv2.CascadeClassifier('/data/cascade_trafficlight.xml')
+    cascade_trafficlight1 = cv2.CascadeClassifier('/data/cascade_trafficlight1.xml')
+    cascade_stop_sing = cv2.CascadeClassifier('/data/stopsign.xml')
+
+    cascades = (
+        cascade_right, cascade_parking, cascade_left, cascade_circle,
+        cascade_stop, cascade_stop_2, cascade_stop_sing, cascade_pedestrian,
+        cascade_trafficlight, cascade_trafficlight1)
     contours, hierarchy = cv2.findContours(dilate.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     print('轮廓个数：', len(contours))
 
@@ -90,8 +97,8 @@ def rectangle(dilate, img, i):
         # 矩形转换为box
         box = np.int0(cv2.boxPoints(rect))
         # 在原图画出目标区域
-        #draw target region
-        # cv2.drawContours(res, [box], -1, (0, 255, 255), 2)
+        # draw target region
+        # cv2.drawContours(res, [box], -1, (0, 255, 255), 2)˚˚˚˚
         print([box])
         # 计算矩形的行列
         h1 = max([box][0][0][1], [box][0][1][1], [box][0][2][1], [box][0][3][1])
@@ -143,11 +150,10 @@ def main():
     cap = cv2.VideoCapture(0)
     while True:
         ret, img = cap.read()
-        img = cv2.imread('屏幕快照 2019-05-12 下午9.14.27.png')
+        # img = cv2.imread()
 
         res = trafficsSingDetection(img)
         cv2.imshow('res', res)
-        img = cv2.imread('01892_00002.ppm')
         cv2.imshow('pic', img)
         cv2.waitKey(0)
 
