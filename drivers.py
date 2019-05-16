@@ -35,7 +35,7 @@ def forward():
     left = motor_configs["forward.y"]
     right = motor_configs["forward.x"]
 
-    print("left:{}, right={}".format(left, right))
+    # print("left:{}, right={}".format(left, right))
 
     sensors["motor"]["left"].forward(left)
     sensors["motor"]["right"].forward(right)
