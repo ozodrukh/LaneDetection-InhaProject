@@ -206,6 +206,15 @@ def right_parking_distance():
         time.sleep(5)
 
 
+def slowdown():
+    for i in 5:
+        temp = (0.51 - (i / 10))
+        motor_configs["forward.y"] = temp
+        motor_configs["forward.x"] = temp
+        time.sleep(0.1)
+        forward()
+    
+
 def left_parking_distance():
     if get_distance() < 0.25:
         motor_configs["forward.y"] = 1
@@ -322,7 +331,7 @@ def on_road_detected(direction, angel):
                     motor_configs["forward.y"] = 0.5
                     motor_configs["forward.x"] = 0.5
         border_detection()
-        obstacle_detection()
+        obstacle_detection(angel)
     forward()
 
 
