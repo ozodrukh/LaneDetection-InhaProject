@@ -153,21 +153,21 @@ def side_dodge():
 
 
 def obstacle_detection(angel):
-    if get_distance() < 0.10 and (angel > 60):
-        side_dodge()
-    elif get_distance() < 0.10 and angel is not None:
-        if lIRsensor():
-            left_dodge()
-        elif rIRsensor():
-            right_dodge()
-        else:
-            stop()
+    if get_distance() > 10:
+        return
+    elif get_distance() < 0.10 and (angel > 60):
         stop()
+    elif get_distance() < 0.10 and angel is None:
+        side_dodge()
+        stop()
+
     # forward()
 
 
 def on_road_detected(direction, angel):
     print(direction, angel)
+    motor_configs["forward.y"] = 0.5
+    motor_configs["forward.x"] = 0.5
     if angel is not None:
         if abs(angel) < 90:
             if angel > 0:
@@ -266,6 +266,7 @@ def on_road_detected(direction, angel):
                     motor_configs["forward.y"] = 0.5
                     motor_configs["forward.x"] = 0.5
         border_detection()
+        obstacle_detection()
     forward()
 
 
