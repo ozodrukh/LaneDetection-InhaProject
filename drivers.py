@@ -113,10 +113,10 @@ def on_road_detected(direction, angel):
         if angel > 0:
             if angel > 15 and angel < 20:
                 motor_configs["forward.y"] = 1
-                motor_configs["forward.x"] = 0.18
+                motor_configs["forward.x"] = 0.14
             elif angel < 30:
                 motor_configs["forward.y"] = 1
-                motor_configs["forward.x"] = 0.25
+                motor_configs["forward.x"] = 0.20
             else:
                 motor_configs["forward.y"] = 1
                 motor_configs["forward.x"] = 0.33
