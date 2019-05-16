@@ -188,9 +188,10 @@ def on_road_detected(direction, angel):
                 motor_configs["forward.y"] = 0.5
                 motor_configs["forward.x"] = 0.5
     if sensors["tracer"]["left"].value == 1 and motor_configs["forward.x"] < 1:
-        motor_configs["forward.x"] += 1
+        motor_configs["forward.x"] +=0.1
+
     if sensors["tracer"]["right"].value == 1 and motor_configs["forward.y"] < 1:
-        motor_configs["forward.y"] += 1
+        motor_configs["forward.y"] += 0.1
     forward()
 
 
