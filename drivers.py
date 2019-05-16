@@ -101,7 +101,7 @@ def light_forward():
     time.sleep(1)
 
 
-def dodge():
+def right_dodge():
     right_quarter_turn()
     slight_forward()
     left_quarter_turn()
@@ -109,6 +109,16 @@ def dodge():
     left_quarter_turn()
     slight_forward()
     right_quarter_turn()
+
+
+def left_dodge():
+    left_quarter_turn()
+    slight_forward()
+    right_quarter_turn()
+    light_forward()
+    right_quarter_turn()
+    slight_forward()
+    left_quarter_turn()
 
 
 def lIRsensor():
