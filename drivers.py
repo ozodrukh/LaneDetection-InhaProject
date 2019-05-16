@@ -22,6 +22,24 @@ sensors = {
     }
 }
 motor_configs = {}
+traffic_signs = {
+    "warnig": {
+        "stop": False,
+        "pedestrian": False
+    },
+    "indication": {
+        "forward": False, "turn left": False,
+        "turn right": False, "Circle Line": False
+    }
+}
+
+
+def traffic_signs_check():
+    if traffic_signs["warnig"]["stop"]:
+        stop()
+        time.sleep(2)
+        traffic_signs["warnig"]["stop"] = True
+
 
 for side in ["left", "right", "forward", "back"]:
     motor_configs[side + ".x"] = 1
@@ -213,7 +231,7 @@ def slowdown():
         motor_configs["forward.x"] = temp
         time.sleep(0.1)
         forward()
-    
+
 
 def left_parking_distance():
     if get_distance() < 0.25:
