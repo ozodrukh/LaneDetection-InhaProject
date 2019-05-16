@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import functools, route
+import functools, route, drivers
 from datetime import datetime
 
 # sudo modprobe bcm2835-v4l2 # to enable camera on pi
@@ -224,7 +224,6 @@ def main():
                         (50, 50), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255))
 
             cv2.imshow("frame", frame)
-
         try:
             key = cv2.waitKey(1)
 
@@ -238,6 +237,10 @@ def main():
             pass
 
     camera.release()
+
+
+def send_motor_signal():
+    drivers.on_road_detected(direction["turn"], direction["angel"])
 
 
 def attach_options_bar():
@@ -365,6 +368,8 @@ DATA = {
 
 if __name__ == "__main__":
     main()
+
+    # @Data Unit Tests
     #
     # params['kernel_max_width'] = size[0]
     # params['kernel_width'] = int(params['kernel_max_width'] / 40)

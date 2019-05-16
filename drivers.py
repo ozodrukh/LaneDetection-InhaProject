@@ -1,7 +1,7 @@
-from gpiozero import DigitalInputDevice, DistanceSensor, Motor
-from functools import partial as bind
 import datetime
-import keyboard
+from functools import partial as bind
+
+from gpiozero import DigitalInputDevice, DistanceSensor, Motor
 
 sensors = {
     "ir": {
@@ -86,9 +86,34 @@ def lIRTracerSensor():
     return sensors["trace"]["left"].value
 
 
+def on_road_detected(direction, angel):
+    print(direction, angel)
+
+    x = 1
+    y = 1
+
+    if abs(angel) < 65:
+        if angel > 0:
+            if angel < 50:
+                x = angel / 140
+
+            else:
+                x = angel / 70
+        else:
+            if angel > -50:
+                y = abs(angel / 140)
+            else:
+                y = abs(angel / 70)
+
+    motor_configs["forward.x"] = x
+    motor_configs["forward.y"] = y
+
+    forward()
+
+
 if __name__ == "__main__":
     import cv2
-    import os, time
+    import os
 
     width = 640
     height = 480
