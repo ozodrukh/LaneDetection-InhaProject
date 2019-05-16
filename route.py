@@ -143,6 +143,9 @@ def find_lines_on_contours(frame, contours, filter_rect):
     target = None
 
     for data in contours_data:
+        if target["angel"] > 15:
+            continue
+
         if target is None or target["distance"] > data["distance"]:
             target = data
 
