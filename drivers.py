@@ -139,6 +139,30 @@ def left_dodge():
     left_quarter_turn()
 
 
+def right_dodge2():
+    motor_configs["forward.y"] = 0.25
+    motor_configs["forward.x"] = 1
+    forward()
+    time.sleep(0.25)
+    motor_configs["forward.y"] = 1
+    motor_configs["forward.x"] = 0.25
+    forward()
+    time.sleep(0.25)
+    motor_configs["forward.y"] = 0.6
+    motor_configs["forward.x"] = 0.6
+    forward()
+    time.sleep(0.4)
+    motor_configs["forward.y"] = 1
+    motor_configs["forward.x"] = 0.35
+    forward()
+    time.sleep(0.4)
+    motor_configs["forward.y"] = 0.35
+    motor_configs["forward.x"] = 1
+    forward()
+    time.sleep(0.4)
+    stop()
+
+
 def lIRsensor():
     return sensors["ir"]["left"].value
 
