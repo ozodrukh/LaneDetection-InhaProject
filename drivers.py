@@ -32,8 +32,8 @@ def get_distance():
 
 
 def forward():
-    left = motor_configs["forward.x"]
-    right = motor_configs["forward.y"]
+    left = motor_configs["forward.y"]
+    right = motor_configs["forward.x"]
 
     print("left:{}, right={}".format(left, right))
 
@@ -96,7 +96,7 @@ def on_road_detected(direction, angel):
                 x = angel / 140
             else:
                 x = angel / 70
-            motor_configs["forward.y"] =1
+            motor_configs["forward.y"] = 1
             motor_configs["forward.x"] = x
             forward()
             return
