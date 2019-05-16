@@ -14,6 +14,7 @@ size = (300, 300)
 # camera.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
 
 params = {
+    'paused': False,
     'fps_counter': True,
     'morph': 'gradient',
     'kernel_width': 0,
@@ -233,7 +234,10 @@ def main():
                 break
 
             if key == 32:
+                params["paused"] = True
+
                 if cv2.waitKey(0) == 32:
+                    params["paused"] = False
                     continue
         except KeyboardInterrupt:
             pass
@@ -242,8 +246,10 @@ def main():
 
 
 def send_motor_signal():
+    if params["paused"]:
+        return
+
     drivers.on_road_detected(direction["turn"], direction["angel"])
-    pass
 
 
 def attach_options_bar():
