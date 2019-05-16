@@ -1,8 +1,9 @@
 import datetime
-from functools import partial as bind
-import cv2
 import os
-from gpiozero import DigitalInputDevice, DistanceSensor, Motor
+from functools import partial as bind
+
+import cv2
+from gpiozero import DigitalInputDevice, Motor
 
 sensors = {
     "ir": {
@@ -13,7 +14,7 @@ sensors = {
         "left": DigitalInputDevice(7),
         "right": DigitalInputDevice(8)
     },
-    #"distance": DistanceSensor(26, 19),
+    # "distance": DistanceSensor(26, 19),
     "motor": {
         'left': Motor(18, 23),
         'right': Motor(24, 25)
@@ -136,9 +137,27 @@ def on_road_detected(direction, angel):
             elif angel < 50 and angel < 55:
                 motor_configs["forward.y"] = 1
                 motor_configs["forward.x"] = 0.30
-            else:
-                motor_configs["forward.y"] = 0.55
+            elif angel < 55 and angel < 60:
+                motor_configs["forward.y"] = 0.6
+                motor_configs["forward.x"] = 0.4
+            elif angel < 60 and angel < 65:
+                motor_configs["forward.y"] = 0.6
                 motor_configs["forward.x"] = 0.5
+            elif angel < 65 and angel < 70:
+                motor_configs["forward.y"] = 0.6
+                motor_configs["forward.x"] = 0.57
+            elif angel < 70 and angel < 75:
+                motor_configs["forward.y"] = 0.57
+                motor_configs["forward.x"] = 0.6
+            elif angel < 75 and angel < 80:
+                motor_configs["forward.y"] = 0.55
+                motor_configs["forward.x"] = 0.6
+            elif angel < 80 and angel < 90:
+                motor_configs["forward.y"] = 0.5
+                motor_configs["forward.x"] = 0.6
+            else:
+                motor_configs["forward.y"] = 0.6
+                motor_configs["forward.x"] = 0.6
         else:
             if angel < -15 and angel > -20:
                 motor_configs["forward.y"] = 0.10
@@ -152,24 +171,42 @@ def on_road_detected(direction, angel):
             elif angel < -30 and angel > -35:
                 motor_configs["forward.y"] = 0.20
                 motor_configs["forward.x"] = 1
-
             elif angel < -35 and angel > -40:
                 motor_configs["forward.y"] = 0.22
                 motor_configs["forward.x"] = 1
-
             elif angel < -40 and angel > -45:
                 motor_configs["forward.y"] = 0.25
                 motor_configs["forward.x"] = 1
             elif angel < -45 and angel > -50:
-                motor_configs["forward.y"] = 0.3
+                motor_configs["forward.y"] = 0.30
                 motor_configs["forward.x"] = 1
             elif angel < -50 and angel > -55:
                 motor_configs["forward.y"] = 0.35
                 motor_configs["forward.x"] = 1
-
+            elif angel < -55 and angel > -60:
+                motor_configs["forward.y"] = 0.35
+                motor_configs["forward.x"] = 0.6
+            elif angel < -60 and angel > -65:
+                motor_configs["forward.y"] = 0.4
+                motor_configs["forward.x"] = 0.6
+            elif angel < -65 and angel > -70:
+                motor_configs["forward.y"] = 0.57
+                motor_configs["forward.x"] = 0.6
+            elif angel < -70 and angel > -75:
+                motor_configs["forward.y"] = 0.6
+                motor_configs["forward.x"] = 0.57
+            elif angel < -75 and angel > -80:
+                motor_configs["forward.y"] = 0.6
+                motor_configs["forward.x"] = 0.5
+            elif angel < -80 and angel > -85:
+                motor_configs["forward.y"] = 0.6
+                motor_configs["forward.x"] = 0.47
+            elif angel < -85 and angel > -90:
+                motor_configs["forward.y"] = 0.6
+                motor_configs["forward.x"] = 0.4
             else:
                 motor_configs["forward.y"] = 0.5
-                motor_configs["forward.x"] = 0.55
+                motor_configs["forward.x"] = 0.5
         forward()
         return
     motor_configs["forward.x"] = 0.5
