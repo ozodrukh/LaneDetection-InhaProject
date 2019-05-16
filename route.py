@@ -47,23 +47,25 @@ def line_intersection(line1, line2):
     y = det(d, ydiff) / div
     point = x, y
 
-    def lies_in(a, b, x):
-        if a[0] >= b[0]:
-            r1 = a[0] >= x[0] >= b[0]
-        else:
-            r1 = b[0] >= x[0] >= a[0]
+    return point
 
-        if a[1] >= b[1]:
-            r2 = a[1] >= x[1] >= b[1]
-        else:
-            r2 = b[1] >= x[1] >= a[1]
-
-        return r1 and r2
-
-    if lies_in(min(line1), max(line1), point) and lies_in(min(line2), max(line2), point):
-        return point
-    else:
-        raise Exception('lines do not intersect')
+    # def lies_in(a, b, x):
+    #     if a[0] >= b[0]:
+    #         r1 = a[0] >= x[0] >= b[0]
+    #     else:
+    #         r1 = b[0] >= x[0] >= a[0]
+    #
+    #     if a[1] >= b[1]:
+    #         r2 = a[1] >= x[1] >= b[1]
+    #     else:
+    #         r2 = b[1] >= x[1] >= a[1]
+    #
+    #     return r1 and r2
+    #
+    # if lies_in(min(line1), max(line1), point) and lies_in(min(line2), max(line2), point):
+    #     return point
+    # else:
+    #     raise Exception('lines do not intersect')
 
 
 def angel(line):

@@ -90,9 +90,9 @@ def render(frame):
 
 
 def find_lines_using_contours(frame, morphed):
-    #if cv2.getVersionMajor() >= 4:
-    #    contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
-    #else:
+    # if cv2.getVersionMajor() >= 4:
+    # contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
+    # else:
     _, contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
 
     if contours is None:
@@ -189,8 +189,8 @@ def main():
     cv2.moveWindow("frame", 0, 0)
     # cv2.moveWindow("morphed", 400, 0)
 
-    #attach_options_bar()
-    #create_hough_line_editor()
+    # attach_options_bar()
+    # create_hough_line_editor()
 
     if params["fps_counter"]:
         pass
@@ -213,7 +213,7 @@ def main():
         frame = normalize_frame_for_lane_detection(frame)
 
         frame = render(frame)
-        
+
         send_motor_signal()
 
         if (datetime.now() - last_start).seconds > 1:
@@ -373,7 +373,19 @@ DATA = {
         {
             "name": "Screen Shot 2019-05-15 at 5.24.50 PM.png",
             "turn": "straight"
-        }
+        },
+        {
+            "name": "Screen Shot 2019-05-16 at 8.21.49 PM.png",
+            "turn": "left"
+        },
+        {
+            "name": "Screen Shot 2019-05-16 at 8.21.56 PM.png",
+            "turn": "left"
+        },
+        {
+            "name": "Screen Shot 2019-05-16 at 8.22.06 PM.png",
+            "turn": "left"
+        },
     ]
 }
 
@@ -381,27 +393,30 @@ if __name__ == "__main__":
     main()
 
     # @Data Unit Tests
-    #
+
     # params['kernel_max_width'] = size[0]
     # params['kernel_width'] = int(params['kernel_max_width'] / 40)
     #
-    # # render(cv2.imread("/Users/ozz/Desktop/Screen Shot 2019-05-15 at 1.23.41 PM.png", cv2.IMREAD_COLOR))
-    #
-    # for target in DATA["targets"]:
+    # frame = cv2.imread("/Users/ozz/Desktop/Screen Shot 2019-05-15 at 5.24.50 PM.png", cv2.IMREAD_COLOR)
+    # render(normalize_frame_for_lane_detection(frame))
+
+    # for target in DATA["targets"][-5:]:
     #     # reset
     #     direction["turn"] = None
     #     direction["angel"] = None
     #
     #     file = DATA["dir"] + target["name"]
     #
-    #     render(cv2.imread(file, cv2.IMREAD_COLOR))
+    #     frame = cv2.imread(file, cv2.IMREAD_COLOR)
+    #     render(normalize_frame_for_lane_detection(frame))
+    #     print(direction)
     #
-    #     if target["turn"] != direction["turn"]:
-    #         print("doesn't match {}, expected={}, got={}".format(
-    #             file, target["turn"], direction["turn"]
-    #         ))
-    #
-    #         raise Exception()
+    #     # if target["turn"] != direction["turn"]:
+    #     #     print("doesn't match {}, expected={}, got={}".format(
+    #     #         file, target["turn"], direction["turn"]
+    #     #     ))
+    #     #
+    #     #     raise Exception()
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
