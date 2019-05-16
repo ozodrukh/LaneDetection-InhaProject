@@ -202,6 +202,13 @@ def find_lines_on_contours(frame, contours, filter_rect):
         text_point = rect_point
 
     cv2.putText(frame,
+                turn ,
+                center_point,
+                cv2.FONT_HERSHEY_PLAIN,
+                1,
+                (255, 255, 255))
+
+    cv2.putText(frame,
                 "t: {3}, d: {0}, w: {1}, a={2}".format(int(d), int(rect[1][0]), int(rect[2]), turn),
                 text_point,
                 cv2.FONT_HERSHEY_PLAIN,

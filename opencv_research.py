@@ -1,19 +1,21 @@
 import cv2
 import numpy as np
 import functools, route
+from datetime import datetime
 
 # sudo modprobe bcm2835-v4l2 # to enable camera on pi
 
 img_path = "/Users/ozz/Documents/Projects/opencv-py/data/outcpp.avi"
 mask_image = cv2.imread("/Users/ozz/Documents/Projects/opencv-py/data/mask_path", cv2.IMREAD_GRAYSCALE)
 
-size = (300, 300)
+size = (600, 600)
 
 # camera.set(cv2.CAP_PROP_FRAME_WIDTH, size[0])
 # camera.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
 
 params = {
-    'morph': 'dilate',
+    'fps_counter': True,
+    'morph': 'gradient',
     'kernel_width': 0,
     'kernel_max_width': 0,
     'kernel_height': 1,
@@ -83,6 +85,7 @@ def render(frame):
 
     cv2.imshow("frame", original)
     # cv2.imshow("morphed", morphed)
+    return original
 
 
 def find_lines_using_contours(frame, morphed):
@@ -177,13 +180,21 @@ def main():
         return
 
     cv2.namedWindow("frame", cv2.WINDOW_AUTOSIZE)
-    cv2.namedWindow("morphed", cv2.WINDOW_AUTOSIZE)
+    # cv2.namedWindow("morphed", cv2.WINDOW_AUTOSIZE)
 
     cv2.moveWindow("frame", 0, 0)
-    cv2.moveWindow("morphed", 400, 0)
+    # cv2.moveWindow("morphed", 400, 0)
 
     attach_options_bar()
     create_hough_line_editor()
+
+    if params["fps_counter"]:
+        pass
+
+    last_start = datetime.now()
+
+    fps = 0
+    current_fps = 0
 
     while camera.isOpened():
         ret, frame = camera.read()
@@ -197,9 +208,19 @@ def main():
         # cv2.imshow("window", frame)
         frame = normalize_frame_for_lane_detection(frame)
 
-        render(frame)
+        frame = render(frame)
 
-        cv2.imshow("resized", frame)
+        if (datetime.now() - last_start).seconds > 1:
+            last_start = datetime.now()
+            current_fps = fps
+            fps = 0
+        else:
+            fps = fps + 1
+
+            cv2.putText(frame, "fps: {}".format(current_fps),
+                        (50, 50), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255))
+
+            cv2.imshow("frame", frame)
 
         try:
             key = cv2.waitKey(1)
