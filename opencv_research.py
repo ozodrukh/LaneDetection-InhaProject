@@ -235,6 +235,7 @@ def main():
 
             if key == 32:
                 params["paused"] = True
+                drivers.stop()
 
                 if cv2.waitKey(0) == 32:
                     params["paused"] = False
