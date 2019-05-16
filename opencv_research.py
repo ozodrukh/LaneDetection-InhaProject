@@ -242,7 +242,7 @@ def main():
 
 
 def send_motor_signal():
-    #drivers.on_road_detected(direction["turn"], direction["angel"])
+    drivers.on_road_detected(direction["turn"], direction["angel"])
     pass
 
 
