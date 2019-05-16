@@ -45,7 +45,25 @@ def line_intersection(line1, line2):
     d = (det(*line1), det(*line2))
     x = det(d, xdiff) / div
     y = det(d, ydiff) / div
-    return x, y
+    point = x, y
+
+    def lies_in(a, b, x):
+        if a[0] >= b[0]:
+            r1 = a[0] >= x[0] >= b[0]
+        else:
+            r1 = b[0] >= x[0] >= a[0]
+
+        if a[1] >= b[1]:
+            r2 = a[1] >= x[1] >= b[1]
+        else:
+            r2 = b[1] >= x[1] >= a[1]
+
+        return r1 and r2
+
+    if lies_in(min(line1), max(line1), point) and lies_in(min(line2), max(line2), point):
+        return point
+    else:
+        raise Exception('lines do not intersect')
 
 
 def angel(line):
@@ -75,22 +93,43 @@ def find_lines_on_contours(frame, contours, filter_rect):
 
         d = distance(center_point, rect_point)
 
-        if int(rect[2]) == 0 and rect[1][0] < 5:
+        if int(rect[2]) == 0 and rect[1][0] < 50:
             continue
 
-        line_point = [bounds[1], bounds[3]]
+        line_point = [bounds[3]]
+
+        ignore_shift = 15
+
+        left_distance = distance(line_point[0], bounds[0])
+        right_distance = distance(line_point[0], bounds[2])
+
+        if right_distance > left_distance > ignore_shift:
+            min_distance_point = bounds[0]
+        elif right_distance > ignore_shift:
+            min_distance_point = bounds[2]
+        else:
+            min_distance_point = bounds[0]
+
+        line_point.append(min_distance_point)
+
+        cv2.line(frame, line_point[1], line_point[0], (255,255,255), 2)
 
         try:
             point = line_intersection([(center_point[0], 0), center_point], line_point)
+            print([(center_point[0], 0), center_point], line_point, point)
         except Exception:
+            print("intersection not found on ctr={}".format(i))
             continue
+
+        print("intersection found on ctr={}".format(i))
+        cv2.circle(frame, intify(point), 5, (255, 255, 255), 1)
 
         # print(angel(line_point))
 
         contours_data.append({
             "index": i,
             "bounds": rect,
-            "angel": angel(line_point),
+            "angel": angel([bounds[3], point]),
             "contour_line": contours[i],
             "center_point": center_point,
             "line_point": line_point,
@@ -104,9 +143,6 @@ def find_lines_on_contours(frame, contours, filter_rect):
     target = None
 
     for data in contours_data:
-        if data["width"] < 100:
-            continue
-
         if target is None or target["distance"] > data["distance"]:
             target = data
 
@@ -118,8 +154,15 @@ def find_lines_on_contours(frame, contours, filter_rect):
         # ))
 
     if target is None:
-        print("line not found")
-        return
+        print("no intersaction found, going straight")
+
+        cv2.putText(frame,
+                    "straight",
+                    center_point,
+                    cv2.FONT_HERSHEY_PLAIN,
+                    1,
+                    (255, 255, 255))
+        return "straight", -70
 
     rect = target["bounds"]
     rect_point = intify(target["line_point"][1])
@@ -136,7 +179,7 @@ def find_lines_on_contours(frame, contours, filter_rect):
 
     cv2.line(frame,
              target["line_point"][0],
-             target["line_point"][1],
+             intify(target["cross_point"]),
              (255, 255, 255),
              5)
 
@@ -164,3 +207,5 @@ def find_lines_on_contours(frame, contours, filter_rect):
                 cv2.FONT_HERSHEY_PLAIN,
                 0.6,
                 (255, 255, 255))
+
+    return turn, target["angel"]

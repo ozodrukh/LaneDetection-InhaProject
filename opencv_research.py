@@ -7,7 +7,7 @@ import functools, route
 img_path = "/Users/ozz/Documents/Projects/opencv-py/data/outcpp.avi"
 mask_image = cv2.imread("/Users/ozz/Documents/Projects/opencv-py/data/mask_path", cv2.IMREAD_GRAYSCALE)
 
-size = (600, 600)
+size = (300, 300)
 
 # camera.set(cv2.CAP_PROP_FRAME_WIDTH, size[0])
 # camera.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
@@ -44,6 +44,11 @@ LINE_COLOR_RANGE_HIGHER = np.array([35, int(1 * 255), int(0.6 * 255)])
 LINE_COLOR_RGB_RANGE_LOWER = np.array([0, 24, 28])
 LINE_COLOR_RGB_RANGE_HIGHER = np.array([80, 169, 220])
 
+direction = {
+    "turn": None,
+    "angel": None
+}
+
 
 def rotateImage(image, angle):
     image_center = tuple(np.array(image.shape[1::-1]) / 2)
@@ -77,13 +82,13 @@ def render(frame):
     find_lines_using_contours(original, morphed)
 
     cv2.imshow("frame", original)
-    cv2.imshow("morphed", morphed)
+    # cv2.imshow("morphed", morphed)
 
 
 def find_lines_using_contours(frame, morphed):
-    r = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
+    contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
 
-    if r is None or len(r) != 2:
+    if contours is None:
         print("no contours")
 
         cv2.putText(frame,
@@ -93,8 +98,6 @@ def find_lines_using_contours(frame, morphed):
                     1,
                     (255, 255, 255))
         return
-
-    contours = r[0]
 
     max_length = 0
 
@@ -110,7 +113,10 @@ def find_lines_using_contours(frame, morphed):
 
         cv2.drawContours(frame, contours, i, (20, int(255 * length / max_length), int(255 * length / max_length)))
 
-    route.find_lines_on_contours(frame, contours, lambda rect: rect[1][0] > 10)
+    t, a = route.find_lines_on_contours(frame, contours, lambda rect: rect[1][0] > 10)
+
+    direction["turn"] = t
+    direction["angel"] = a
 
 
 def find_lines_using_Canny_and_HoughLines(frame, morphed):
@@ -164,7 +170,7 @@ def normalize_frame_for_lane_detection(frame):
 
 
 def main():
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(img_path)
 
     if not camera.isOpened():
         print("Video not opened")
@@ -295,17 +301,67 @@ def create_hsv_bar():
     createHSVTrackbar(True)
 
 
+DATA = {
+    "dir": "/Users/ozz/Desktop/",
+    "targets": [
+        {
+            "name": "Screen Shot 2019-05-15 at 1.23.41 PM.png",
+            "turn": "left"
+        },
+        {
+            "name": "Screen Shot 2019-05-15 at 1.23.50 PM.png",
+            "turn": "straight"
+        },
+        {
+            "name": "Screen Shot 2019-05-15 at 4.32.18 PM.png",
+            "turn": "right"
+        },
+        {
+            "name": "Screen Shot 2019-05-15 at 5.24.29 PM.png",
+            "turn": "right"
+        },
+        {
+            "name": "Screen Shot 2019-05-15 at 4.31.38 PM.png",
+            "turn": "right"
+        },
+        {
+            "name": "Screen Shot 2019-05-15 at 4.31.38 PM.png",
+            "turn": "right"
+        },
+        {
+            "name": "Screen Shot 2019-05-15 at 5.23.47 PM.png",
+            "turn": "straight"
+        },
+        {
+            "name": "Screen Shot 2019-05-15 at 5.24.50 PM.png",
+            "turn": "straight"
+        }
+    ]
+}
+
 if __name__ == "__main__":
     main()
-    # left_line = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 1.23.41 PM.png"
-    # straight_line = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 1.23.50 PM.png"
-    # right_line = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 4.32.18 PM.png"
-    # size = (300, 300)
     #
     # params['kernel_max_width'] = size[0]
     # params['kernel_width'] = int(params['kernel_max_width'] / 40)
     #
-    # render(cv2.imread(straight_line, cv2.IMREAD_COLOR))
+    # # render(cv2.imread("/Users/ozz/Desktop/Screen Shot 2019-05-15 at 1.23.41 PM.png", cv2.IMREAD_COLOR))
+    #
+    # for target in DATA["targets"]:
+    #     # reset
+    #     direction["turn"] = None
+    #     direction["angel"] = None
+    #
+    #     file = DATA["dir"] + target["name"]
+    #
+    #     render(cv2.imread(file, cv2.IMREAD_COLOR))
+    #
+    #     if target["turn"] != direction["turn"]:
+    #         print("doesn't match {}, expected={}, got={}".format(
+    #             file, target["turn"], direction["turn"]
+    #         ))
+    #
+    #         raise Exception()
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
