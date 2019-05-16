@@ -1,5 +1,6 @@
 import datetime
 import os
+import time
 from functools import partial as bind
 
 import cv2
@@ -70,6 +71,44 @@ def turn_right():
 def stop():
     sensors["motor"]["left"].stop()
     sensors["motor"]["right"].stop()
+
+
+def right_quarter_turn():
+    motor_configs["right.y"] = 1
+    motor_configs["right.x"] = 0.5
+    turn_right()
+    time.sleep(0.6)
+
+
+def left_quarter_turn():
+    motor_configs["right.y"] = 1
+    motor_configs["right.x"] = 0.5
+    turn_left()
+    time.sleep(0.6)
+
+
+def slight_forward():
+    motor_configs["right.y"] = 1
+    motor_configs["right.x"] = 1
+    forward()
+    time.sleep(0.4)
+
+
+def light_forward():
+    motor_configs["right.y"] = 1
+    motor_configs["right.x"] = 1
+    forward()
+    time.sleep(1)
+
+
+def dodge():
+    right_quarter_turn()
+    slight_forward()
+    left_quarter_turn()
+    light_forward()
+    left_quarter_turn()
+    slight_forward()
+    right_quarter_turn()
 
 
 def lIRsensor():
@@ -188,7 +227,7 @@ def on_road_detected(direction, angel):
                 motor_configs["forward.y"] = 0.5
                 motor_configs["forward.x"] = 0.5
     if sensors["tracer"]["left"].value == 1 and motor_configs["forward.x"] < 1:
-        motor_configs["forward.x"] +=0.1
+        motor_configs["forward.x"] += 0.1
 
     if sensors["tracer"]["right"].value == 1 and motor_configs["forward.y"] < 1:
         motor_configs["forward.y"] += 0.1
