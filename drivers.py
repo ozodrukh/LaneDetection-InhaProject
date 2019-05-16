@@ -1,6 +1,7 @@
 import datetime
 from functools import partial as bind
-
+import cv2
+import os
 from gpiozero import DigitalInputDevice, DistanceSensor, Motor
 
 sensors = {
@@ -178,9 +179,6 @@ def on_road_detected(direction, angel):
 
 
 def main():
-    import cv2
-    import os
-
     width = 640
     height = 480
 
