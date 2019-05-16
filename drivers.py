@@ -322,7 +322,7 @@ def on_road_detected(direction, angel):
                     motor_configs["forward.y"] = 0.5
                     motor_configs["forward.x"] = 0.5
         border_detection()
-        obstacle_detection()
+        obstacle_detection(angel)
     forward()
 
 
