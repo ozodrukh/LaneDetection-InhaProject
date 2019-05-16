@@ -126,16 +126,16 @@ def on_road_detected(direction, angel):
                 motor_configs["forward.x"] = 0.20
             elif angel < 35 and angel < 40:
                 motor_configs["forward.y"] = 1
-                motor_configs["forward.x"] = 0.25
+                motor_configs["forward.x"] = 0.22
             elif angel < 40 and angel < 45:
                 motor_configs["forward.y"] = 1
-                motor_configs["forward.x"] = 0.28
+                motor_configs["forward.x"] = 0.25
             elif angel < 45 and angel < 50:
                 motor_configs["forward.y"] = 1
-                motor_configs["forward.x"] = 0.3
+                motor_configs["forward.x"] = 0.28
             elif angel < 50 and angel < 55:
                 motor_configs["forward.y"] = 1
-                motor_configs["forward.x"] = 0.35
+                motor_configs["forward.x"] = 0.30
             else:
                 motor_configs["forward.y"] = 0.55
                 motor_configs["forward.x"] = 0.5
