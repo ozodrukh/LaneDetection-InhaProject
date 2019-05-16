@@ -8,7 +8,7 @@ from datetime import datetime
 img_path = "/Users/ozz/Documents/Projects/opencv-py/data/outcpp.avi"
 mask_image = cv2.imread("/Users/ozz/Documents/Projects/opencv-py/data/mask_path", cv2.IMREAD_GRAYSCALE)
 
-size = (600, 600)
+size = (300, 300)
 
 # camera.set(cv2.CAP_PROP_FRAME_WIDTH, size[0])
 # camera.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
@@ -89,7 +89,10 @@ def render(frame):
 
 
 def find_lines_using_contours(frame, morphed):
-    contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
+    if cv2.getVersionMajor() >= 4:
+        contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
+    else:
+        _, contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
 
     if contours is None:
         print("no contours")
@@ -173,7 +176,7 @@ def normalize_frame_for_lane_detection(frame):
 
 
 def main():
-    camera = cv2.VideoCapture(img_path)
+    camera = cv2.VideoCapture(0)
 
     if not camera.isOpened():
         print("Video not opened")
