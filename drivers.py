@@ -109,28 +109,61 @@ def on_road_detected(direction, angel):
     #         motor_configs["forward.x"] = 0.85
     #         forward()
     #         return
-    if abs(angel) < 40:
+    if abs(angel) < 55:
         if angel > 0:
             if angel > 15 and angel < 20:
                 motor_configs["forward.y"] = 1
-                motor_configs["forward.x"] = 0.14
-            elif angel < 30:
+                motor_configs["forward.x"] = 0.10
+            elif angel > 20 and angel < 25:
+                motor_configs["forward.y"] = 1
+                motor_configs["forward.x"] = 0.13
+            elif angel > 25 and angel < 30:
+                motor_configs["forward.y"] = 1
+                motor_configs["forward.x"] = 0.16
+            elif angel < 30 and angel < 35:
                 motor_configs["forward.y"] = 1
                 motor_configs["forward.x"] = 0.20
-            else:
+            elif angel < 35 and angel < 40:
                 motor_configs["forward.y"] = 1
-                motor_configs["forward.x"] = 0.33
+                motor_configs["forward.x"] = 0.25
+            elif angel < 40 and angel < 45:
+                motor_configs["forward.y"] = 1
+                motor_configs["forward.x"] = 0.3
+            elif angel < 45 and angel < 50:
+                motor_configs["forward.y"] = 0.8
+                motor_configs["forward.x"] = 0.3
+            else:
+                motor_configs["forward.y"] = 0.6
+                motor_configs["forward.x"] = 0.5
+
         else:
             if angel < -15 and angel < -20:
-                motor_configs["forward.y"] = 0.15
+                motor_configs["forward.y"] = 0.10
                 motor_configs["forward.x"] = 1
-            elif angel < -30:
-                motor_configs["forward.y"] = 0.18
-                motor_configs["forward.x"] = 0.22
+            elif angel < -20 and angel < -25:
+                motor_configs["forward.y"] = 0.13
+                motor_configs["forward.x"] = 1
+            elif angel < -25 and angel < -30:
+                motor_configs["forward.y"] = 0.16
+                motor_configs["forward.x"] = 1
+            elif angel < -30 and angel < -35:
+                motor_configs["forward.y"] = 0.22
+                motor_configs["forward.x"] = 1
+
+            elif angel < -35 and angel < -40:
+                motor_configs["forward.y"] = 0.25
+                motor_configs["forward.x"] = 1
+
+            elif angel < -40 and angel < -45:
+                motor_configs["forward.y"] = 0.3
+                motor_configs["forward.x"] = 0.1
+            elif angel < -45 and angel < -50:
+                motor_configs["forward.y"] = 0.4
+                motor_configs["forward.x"] = 0.8
 
             else:
-                motor_configs["forward.y"] = 1
-                motor_configs["forward.x"] = 0.30
+                motor_configs["forward.y"] = 0.5
+                motor_configs["forward.x"] = 0.6
         forward()
         return
     motor_configs["forward.x"] = 0.5
@@ -138,7 +171,7 @@ def on_road_detected(direction, angel):
     forward()
 
 
-if __name__ == "__main__":
+def main():
     import cv2
     import os
 
@@ -168,10 +201,8 @@ if __name__ == "__main__":
     fourcc = cv2.VideoWriter_fourcc(*'MJPG')
     video_output = cv2.VideoWriter('./session.avi', fourcc, 30.0, (640, 480))
 
-
     def set_motor_config(config_name, value):
         motor_configs[config_name] = value / 100
-
 
     for config in motor_configs:
         update_config = bind(set_motor_config, config)
@@ -215,3 +246,8 @@ if __name__ == "__main__":
             print("stop")
             direction.clear()
             action_time = None
+
+
+if __name__ == "__main__":
+    # max()
+    pass
