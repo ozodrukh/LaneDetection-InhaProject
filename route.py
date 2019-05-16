@@ -202,7 +202,7 @@ def find_lines_on_contours(frame, contours, filter_rect):
         text_point = rect_point
 
     cv2.putText(frame,
-                turn ,
+                "{}, {}".format(turn, target["angel"]),
                 center_point,
                 cv2.FONT_HERSHEY_PLAIN,
                 1,

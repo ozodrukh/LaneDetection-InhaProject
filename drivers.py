@@ -92,7 +92,7 @@ def on_road_detected(direction, angel):
 
     if abs(angel) < 65:
         if angel > 0:
-            if angel < 50:
+            if angel < 45:
                 x = angel / 140
             else:
                 x = angel / 70
@@ -101,7 +101,7 @@ def on_road_detected(direction, angel):
             forward()
             return
         else:
-            if angel > -50:
+            if angel > -45:
                 y = abs(angel / 140)
             else:
                 y = abs(angel / 70)
