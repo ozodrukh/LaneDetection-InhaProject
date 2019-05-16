@@ -247,6 +247,7 @@ def main():
 
 def send_motor_signal():
     if params["paused"]:
+        drivers.stop()
         return
 
     drivers.on_road_detected(direction["turn"], direction["angel"])
