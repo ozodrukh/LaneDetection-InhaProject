@@ -89,30 +89,52 @@ def lIRTracerSensor():
 def on_road_detected(direction, angel):
     print(direction, angel)
 
-
-    if abs(angel) < 65:
+    # if abs(angel) < 65:
+    #     if angel > 0:
+    #         if angel < 45:
+    #             x = angel / 140
+    #         else:
+    #             x = angel / 70
+    #         motor_configs["forward.y"] = 0.85
+    #         motor_configs["forward.x"] = x
+    #         forward()
+    #         return
+    #     else:
+    #         if angel > -45:
+    #             y = abs(angel / 140)
+    #         else:
+    #             y = abs(angel / 70)
+    #
+    #         motor_configs["forward.y"] = y
+    #         motor_configs["forward.x"] = 0.85
+    #         forward()
+    #         return
+    if abs(angel) < 40:
         if angel > 0:
-            if angel < 45:
-                x = angel / 140
+            if angel > 15 and angel < 20:
+                motor_configs["forward.y"] = 1
+                motor_configs["forward.x"] = 0.15
+            elif angel < 30:
+                motor_configs["forward.y"] = 1
+                motor_configs["forward.x"] = 0.22
             else:
-                x = angel / 70
-            motor_configs["forward.y"] = 0.85
-            motor_configs["forward.x"] = x
-            forward()
-            return
+                motor_configs["forward.y"] = 1
+                motor_configs["forward.x"] = 0.3
         else:
-            if angel > -45:
-                y = abs(angel / 140)
+            if angel < -15 and angel < -20:
+                motor_configs["forward.y"] = 0.15
+                motor_configs["forward.x"] = 1
+            elif angel < -30:
+                motor_configs["forward.y"] = 0.18
+                motor_configs["forward.x"] = 0.22
+
             else:
-                y = abs(angel / 70)
-
-            motor_configs["forward.y"] = y
-            motor_configs["forward.x"] = 0.85
-            forward()
-            return
-
-    motor_configs["forward.x"] = 0.4
-    motor_configs["forward.y"] = 0.4
+                motor_configs["forward.y"] = 1
+                motor_configs["forward.x"] = 0.30
+        forward()
+        return
+    motor_configs["forward.x"] = 0.5
+    motor_configs["forward.y"] = 0.5
     forward()
 
 
