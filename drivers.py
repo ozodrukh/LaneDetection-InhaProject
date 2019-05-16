@@ -22,6 +22,24 @@ sensors = {
     }
 }
 motor_configs = {}
+traffic_signs = {
+    "warnig": {
+        "stop": False,
+        "pedestrian": False
+    },
+    "indication": {
+        "forward": False, "turn left": False,
+        "turn right": False, "Circle Line": False
+    }
+}
+
+
+def traffic_signs_check():
+    if traffic_signs["warnig"]["stop"]:
+        stop()
+        time.sleep(2)
+        traffic_signs["warnig"]["stop"] = True
+
 
 for side in ["left", "right", "forward", "back"]:
     motor_configs[side + ".x"] = 1
@@ -121,6 +139,30 @@ def left_dodge():
     left_quarter_turn()
 
 
+def right_dodge2():
+    motor_configs["forward.y"] = 0.25
+    motor_configs["forward.x"] = 1
+    forward()
+    time.sleep(0.25)
+    motor_configs["forward.y"] = 1
+    motor_configs["forward.x"] = 0.25
+    forward()
+    time.sleep(0.25)
+    motor_configs["forward.y"] = 0.6
+    motor_configs["forward.x"] = 0.6
+    forward()
+    time.sleep(0.4)
+    motor_configs["forward.y"] = 1
+    motor_configs["forward.x"] = 0.35
+    forward()
+    time.sleep(0.4)
+    motor_configs["forward.y"] = 0.35
+    motor_configs["forward.x"] = 1
+    forward()
+    time.sleep(0.4)
+    stop()
+
+
 def lIRsensor():
     return sensors["ir"]["left"].value
 
@@ -213,7 +255,7 @@ def slowdown():
         motor_configs["forward.x"] = temp
         time.sleep(0.1)
         forward()
-    
+
 
 def left_parking_distance():
     if get_distance() < 0.25:
