@@ -81,22 +81,22 @@ def right_quarter_turn():
 
 
 def left_quarter_turn():
-    motor_configs["right.y"] = 1
-    motor_configs["right.x"] = 0.5
+    motor_configs["left.y"] = 1
+    motor_configs["left.x"] = 0.5
     turn_left()
     time.sleep(0.6)
 
 
 def slight_forward():
-    motor_configs["right.y"] = 1
-    motor_configs["right.x"] = 1
+    motor_configs["forward.y"] = 1
+    motor_configs["forward.x"] = 1
     forward()
     time.sleep(0.4)
 
 
 def light_forward():
-    motor_configs["right.y"] = 1
-    motor_configs["right.x"] = 1
+    motor_configs["forward.y"] = 1
+    motor_configs["forward.x"] = 1
     forward()
     time.sleep(1)
 
