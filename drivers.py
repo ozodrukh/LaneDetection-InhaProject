@@ -89,8 +89,6 @@ def lIRTracerSensor():
 def on_road_detected(direction, angel):
     print(direction, angel)
 
-    x = 0.5
-    y = 0.5
 
     if abs(angel) < 65:
         if angel > 0:
@@ -98,15 +96,23 @@ def on_road_detected(direction, angel):
                 x = angel / 140
             else:
                 x = angel / 70
+            motor_configs["forward.y"] =1
+            motor_configs["forward.x"] = x
+            forward()
+            return
         else:
             if angel > -50:
                 y = abs(angel / 140)
             else:
                 y = abs(angel / 70)
 
-    motor_configs["forward.x"] = x
-    motor_configs["forward.y"] = y
+            motor_configs["forward.y"] = y
+            motor_configs["forward.x"] = 1
+            forward()
+            return
 
+    motor_configs["forward.x"] = 0.5
+    motor_configs["forward.y"] = 0.5
     forward()
 
 
