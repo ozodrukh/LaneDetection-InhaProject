@@ -162,28 +162,63 @@ def obstacle_detection(angel):
         stop()
 
     # forward()
+
+
 def left_parking():
-    motor_configs["forward.y"] = 1
-    motor_configs["forward.x"] = 1
-    forward()
-    time.sleep(0.1)
-    motor_configs["forward.y"] = 1
-    motor_configs["forward.x"] = 0.23
-    forward()
-    time.sleep(1.5)
-    stop()
-    time.sleep(5)
+    if get_distance() < 0.25:
+        motor_configs["forward.y"] = 1
+        motor_configs["forward.x"] = 1
+        forward()
+        time.sleep(0.1)
+        motor_configs["forward.y"] = 1
+        motor_configs["forward.x"] = 0.23
+        forward()
+        time.sleep(1.5)
+        stop()
+        time.sleep(5)
+
+
 def right_parking():
-    motor_configs["forward.y"] = 1
-    motor_configs["forward.x"] = 1
-    forward()
-    time.sleep(0.1)
-    motor_configs["forward.y"] = 0.23
-    motor_configs["forward.x"] = 1
-    forward()
-    time.sleep(1.5)
-    stop()
-    time.sleep(5)
+    if get_distance() < 0.25:
+        motor_configs["forward.y"] = 1
+        motor_configs["forward.x"] = 1
+        forward()
+        time.sleep(0.1)
+        motor_configs["forward.y"] = 0.23
+        motor_configs["forward.x"] = 1
+        forward()
+        time.sleep(1.5)
+        stop()
+        time.sleep(5)
+
+
+def right_parking_distance():
+    if get_distance() < 0.25:
+        motor_configs["forward.y"] = 1
+        motor_configs["forward.x"] = 1
+        forward()
+        time.sleep(0.1)
+        motor_configs["forward.y"] = 0.23
+        motor_configs["forward.x"] = 1
+        forward()
+        time.sleep(1.5)
+        stop()
+        time.sleep(5)
+
+
+def left_parking_distance():
+    if get_distance() < 0.25:
+        motor_configs["forward.y"] = 1
+        motor_configs["forward.x"] = 1
+        forward()
+        time.sleep(0.1)
+        motor_configs["forward.y"] = 1
+        motor_configs["forward.x"] = 0.23
+        forward()
+        time.sleep(1.5)
+        stop()
+        time.sleep(5)
+
 
 def on_road_detected(direction, angel):
     print(direction, angel)
