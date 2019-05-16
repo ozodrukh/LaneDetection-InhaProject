@@ -2,6 +2,8 @@ from math import sqrt, pow, atan, pi
 
 import cv2
 
+from configs import GUI_MODE
+
 
 def distance(pt1, pt2):
     return sqrt(pow(pt2[0] - pt1[0], 2) + pow(pt2[1] - pt1[1], 2))
@@ -114,19 +116,15 @@ def find_lines_on_contours(frame, contours, filter_rect):
 
         line_point.append(min_distance_point)
 
-        cv2.line(frame, line_point[1], line_point[0], (255,255,255), 2)
+        if GUI_MODE:
+            cv2.line(frame, line_point[1], line_point[0], (255, 255, 255), 2)
 
         try:
             point = line_intersection([(center_point[0], 0), center_point], line_point)
-            #print([(center_point[0], 0), center_point], line_point, point)
+            # print([(center_point[0], 0), center_point], line_point, point)
         except Exception:
-            #print("intersection not found on ctr={}".format(i))
+            # print("intersection not found on ctr={}".format(i))
             continue
-
-        #print("intersection found on ctr={}".format(i))
-        cv2.circle(frame, intify(point), 5, (255, 255, 255), 1)
-
-        # print(angel(line_point))
 
         contours_data.append({
             "index": i,
@@ -161,32 +159,34 @@ def find_lines_on_contours(frame, contours, filter_rect):
     if target is None:
         print("no intersaction found, going straight")
 
-        cv2.putText(frame,
-                    "straight",
-                    center_point,
-                    cv2.FONT_HERSHEY_PLAIN,
-                    1,
-                    (255, 255, 255))
+        if GUI_MODE:
+            cv2.putText(frame,
+                        "straight",
+                        center_point,
+                        cv2.FONT_HERSHEY_PLAIN,
+                        1,
+                        (255, 255, 255))
         return "straight", -70
 
     rect = target["bounds"]
     rect_point = intify(target["line_point"][1])
 
-    box = cv2.boxPoints(rect)
+    if GUI_MODE:
+        box = cv2.boxPoints(rect)
 
-    for i in range(4):
-        x, y = box[i]
-        x1, y1 = box[(i + 1) % 4]
+        for i in range(4):
+            x, y = box[i]
+            x1, y1 = box[(i + 1) % 4]
 
-        cv2.line(frame, (x, y), (x1, y1), (0, 255, 0), 1)
+            cv2.line(frame, (x, y), (x1, y1), (0, 255, 0), 1)
 
-    cv2.line(frame, intify(center_point), intify(target["cross_point"]), (255, 255, 255), 5)
+        cv2.line(frame, intify(center_point), intify(target["cross_point"]), (255, 255, 255), 5)
 
-    cv2.line(frame,
-             target["line_point"][0],
-             intify(target["cross_point"]),
-             (255, 255, 255),
-             5)
+        cv2.line(frame,
+                 target["line_point"][0],
+                 intify(target["cross_point"]),
+                 (255, 255, 255),
+                 5)
 
     # dist_point = get_line_distortion(contours[i], rect[2])
 
@@ -199,25 +199,26 @@ def find_lines_on_contours(frame, contours, filter_rect):
     else:
         turn = "straight"
 
-    #print("angel={}, turn={}".format(target["angel"], turn))
+    # print("angel={}, turn={}".format(target["angel"], turn))
 
-    if frame_size[0] > rect_point[0] > 100:
-        text_point = (center_point[0] - 50, rect_point[1])
-    else:
-        text_point = rect_point
+    if GUI_MODE:
+        if frame_size[0] > rect_point[0] > 100:
+            text_point = (center_point[0] - 50, rect_point[1])
+        else:
+            text_point = rect_point
 
-    cv2.putText(frame,
-                "{}, {}".format(turn, target["angel"]),
-                center_point,
-                cv2.FONT_HERSHEY_PLAIN,
-                1,
-                (255, 255, 255))
+        cv2.putText(frame,
+                    "{}, {}".format(turn, target["angel"]),
+                    center_point,
+                    cv2.FONT_HERSHEY_PLAIN,
+                    1,
+                    (255, 255, 255))
 
-    cv2.putText(frame,
-                "t: {3}, d: {0}, w: {1}, a={2}".format(int(d), int(rect[1][0]), int(rect[2]), turn),
-                text_point,
-                cv2.FONT_HERSHEY_PLAIN,
-                0.6,
-                (255, 255, 255))
+        cv2.putText(frame,
+                    "t: {3}, d: {0}, w: {1}, a={2}".format(int(d), int(rect[1][0]), int(rect[2]), turn),
+                    text_point,
+                    cv2.FONT_HERSHEY_PLAIN,
+                    0.6,
+                    (255, 255, 255))
 
     return turn, target["angel"]

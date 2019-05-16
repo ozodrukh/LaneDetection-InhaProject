@@ -1,14 +1,18 @@
+from configs import LOCAL_MODE, GUI_MODE
+
+import configs
 import cv2
 import numpy as np
-import functools, route, drivers
+import functools, route
+
 from datetime import datetime
+
+if not LOCAL_MODE:
+    import drivers
 
 # sudo modprobe bcm2835-v4l2 # to enable camera on pi
 
-img_path = "/Users/ozz/Documents/Projects/opencv-py/data/outcpp.avi"
-mask_image = cv2.imread("/Users/ozz/Documents/Projects/opencv-py/data/mask_path", cv2.IMREAD_GRAYSCALE)
-
-size = (300, 300)
+size = configs.resize
 
 # camera.set(cv2.CAP_PROP_FRAME_WIDTH, size[0])
 # camera.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
@@ -84,21 +88,23 @@ def render(frame):
     # find_lines_using_Canny_and_HoughLines(original, morphed)
     find_lines_using_contours(original, morphed)
 
-    cv2.imshow("frame", original)
+    if GUI_MODE:
+        cv2.imshow("frame", original)
     # cv2.imshow("morphed", morphed)
     return original
 
 
 def find_lines_using_contours(frame, morphed):
-    # if cv2.getVersionMajor() >= 4:
-    # contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
-    # else:
-    _, contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
+    if LOCAL_MODE:
+        contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
+    else:
+        _, contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
 
     if contours is None:
         print("no contours")
 
-        cv2.putText(frame,
+        if GUI_MODE:
+            cv2.putText(frame,
                     "No Contours",
                     (int(size[0] / 2), 0),
                     cv2.FONT_HERSHEY_PLAIN,
@@ -106,19 +112,20 @@ def find_lines_using_contours(frame, morphed):
                     (255, 255, 255))
         return
 
-    max_length = 0
+    if GUI_MODE:
+        max_length = 0
 
-    for i in range(len(contours)):
-        length = cv2.arcLength(contours[i], False)
-        if length > max_length:
-            max_length = length
+        for i in range(len(contours)):
+            length = cv2.arcLength(contours[i], False)
+            if length > max_length:
+                max_length = length
 
-    for i in range(len(contours)):
-        length = cv2.arcLength(contours[i], False)
-        if length < 150:
-            continue
+        for i in range(len(contours)):
+            length = cv2.arcLength(contours[i], False)
+            if length < 150:
+                continue
 
-        cv2.drawContours(frame, contours, i, (20, int(255 * length / max_length), int(255 * length / max_length)))
+            cv2.drawContours(frame, contours, i, (20, int(255 * length / max_length), int(255 * length / max_length)))
 
     t, a = route.find_lines_on_contours(frame, contours, lambda rect: rect[1][0] > 10)
 
@@ -177,23 +184,21 @@ def normalize_frame_for_lane_detection(frame):
 
 
 def main():
-    camera = cv2.VideoCapture(0)
+    camera = cv2.VideoCapture(configs.camera_target)
 
     if not camera.isOpened():
         print("Video not opened")
         return
 
-    cv2.namedWindow("frame", cv2.WINDOW_AUTOSIZE)
-    # cv2.namedWindow("morphed", cv2.WINDOW_AUTOSIZE)
+    if GUI_MODE:
+        cv2.namedWindow("frame", cv2.WINDOW_AUTOSIZE)
+        # cv2.namedWindow("morphed", cv2.WINDOW_AUTOSIZE)
 
-    cv2.moveWindow("frame", 0, 0)
-    # cv2.moveWindow("morphed", 400, 0)
+        cv2.moveWindow("frame", 0, 0)
+        # cv2.moveWindow("morphed", 400, 0)
 
-    # attach_options_bar()
-    # create_hough_line_editor()
-
-    if params["fps_counter"]:
-        pass
+        # attach_options_bar()
+        # create_hough_line_editor()
 
     last_start = datetime.now()
 
@@ -201,7 +206,7 @@ def main():
     current_fps = 0
 
     while camera.isOpened():
-        ret, frame = camera.read()
+        _, frame = camera.read()
 
         if frame.size == 0:
             break
@@ -220,13 +225,14 @@ def main():
             last_start = datetime.now()
             current_fps = fps
             fps = 0
-        else:
+        elif params["fps_counter"] and GUI_MODE:
             fps = fps + 1
 
             cv2.putText(frame, "fps: {}".format(current_fps),
                         (50, 50), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255))
 
             cv2.imshow("frame", frame)
+
         try:
             key = cv2.waitKey(1)
 
@@ -235,7 +241,7 @@ def main():
 
             if key == 32:
                 params["paused"] = True
-                drivers.stop()
+                send_motor_signal()
 
                 if cv2.waitKey(0) == 32:
                     params["paused"] = False
@@ -390,15 +396,17 @@ DATA = {
 }
 
 if __name__ == "__main__":
-    main()
+    if not configs.single_image_test:
+        main()
+    else:
+        params['kernel_max_width'] = size[0]
+        params['kernel_width'] = int(params['kernel_max_width'] / 40)
+
+        frame = cv2.imread(configs.single_image_source, cv2.IMREAD_COLOR)
+        render(normalize_frame_for_lane_detection(frame))
 
     # @Data Unit Tests
-
-    # params['kernel_max_width'] = size[0]
-    # params['kernel_width'] = int(params['kernel_max_width'] / 40)
     #
-    # frame = cv2.imread("/Users/ozz/Desktop/Screen Shot 2019-05-15 at 5.24.50 PM.png", cv2.IMREAD_COLOR)
-    # render(normalize_frame_for_lane_detection(frame))
 
     # for target in DATA["targets"][-5:]:
     #     # reset
