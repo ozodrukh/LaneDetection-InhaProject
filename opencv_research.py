@@ -89,10 +89,10 @@ def render(frame):
 
 
 def find_lines_using_contours(frame, morphed):
-    if cv2.getVersionMajor() >= 4:
-        contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
-    else:
-        _, contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
+    #if cv2.getVersionMajor() >= 4:
+    #    contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
+    #else:
+    _, contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
 
     if contours is None:
         print("no contours")
@@ -212,6 +212,8 @@ def main():
         frame = normalize_frame_for_lane_detection(frame)
 
         frame = render(frame)
+        
+        send_motor_signal()
 
         if (datetime.now() - last_start).seconds > 1:
             last_start = datetime.now()

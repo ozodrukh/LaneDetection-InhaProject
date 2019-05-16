@@ -89,14 +89,13 @@ def lIRTracerSensor():
 def on_road_detected(direction, angel):
     print(direction, angel)
 
-    x = 1
-    y = 1
+    x = 0.5
+    y = 0.5
 
     if abs(angel) < 65:
         if angel > 0:
             if angel < 50:
                 x = angel / 140
-
             else:
                 x = angel / 70
         else:
