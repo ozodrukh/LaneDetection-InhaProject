@@ -116,12 +116,12 @@ def find_lines_on_contours(frame, contours, filter_rect):
 
         try:
             point = line_intersection([(center_point[0], 0), center_point], line_point)
-            print([(center_point[0], 0), center_point], line_point, point)
+            #print([(center_point[0], 0), center_point], line_point, point)
         except Exception:
-            print("intersection not found on ctr={}".format(i))
+            #print("intersection not found on ctr={}".format(i))
             continue
 
-        print("intersection found on ctr={}".format(i))
+        #print("intersection found on ctr={}".format(i))
         cv2.circle(frame, intify(point), 5, (255, 255, 255), 1)
 
         # print(angel(line_point))
@@ -197,7 +197,7 @@ def find_lines_on_contours(frame, contours, filter_rect):
     else:
         turn = "straight"
 
-    print("angel={}, turn={}".format(target["angel"], turn))
+    #print("angel={}, turn={}".format(target["angel"], turn))
 
     if frame_size[0] > rect_point[0] > 100:
         text_point = (center_point[0] - 50, rect_point[1])

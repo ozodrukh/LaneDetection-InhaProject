@@ -188,8 +188,8 @@ def main():
     cv2.moveWindow("frame", 0, 0)
     # cv2.moveWindow("morphed", 400, 0)
 
-    attach_options_bar()
-    create_hough_line_editor()
+    #attach_options_bar()
+    #create_hough_line_editor()
 
     if params["fps_counter"]:
         pass
