@@ -368,7 +368,7 @@ DATA = {
 }
 
 if __name__ == "__main__":
-    if not configs.single_image_test:
+    if not configs.PRODUCTION_MODE:
         main()
     else:
         params['kernel_max_width'] = size[0]
