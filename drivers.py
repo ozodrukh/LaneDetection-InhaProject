@@ -6,19 +6,19 @@ from functools import partial as bind
 import cv2
 
 sensors = {
-    # "ir": {
-    #     "left": DigitalInputDevice(12),
-    #     "right": DigitalInputDevice(16)
-    # },
-    # "tracer": {
-    #     "left": DigitalInputDevice(7),
-    #     "right": DigitalInputDevice(8)
-    # },
-    # #"distance": DistanceSensor(26, 19),
-    # "motor": {
-    #     'left': Motor(18, 23),
-    #     'right': Motor(24, 25)
-    # }
+    "ir": {
+        "left": DigitalInputDevice(12),
+        "right": DigitalInputDevice(16)
+    },
+    "tracer": {
+        "left": DigitalInputDevice(7),
+        "right": DigitalInputDevice(8)
+    },
+    #"distance": DistanceSensor(26, 19),
+    "motor": {
+        'left': Motor(18, 23),
+        'right': Motor(24, 25)
+    }
 }
 motor_configs = {
     # "forward.y": 0, "forward.x": 0
