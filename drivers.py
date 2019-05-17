@@ -23,7 +23,7 @@ sensors = {
 }
 motor_configs = {}
 traffic_signs = {
-    "warnig": {
+    "warning": {
         "stop": False,
         "pedestrian": False
     },
@@ -35,10 +35,10 @@ traffic_signs = {
 
 
 def traffic_signs_check():
-    if traffic_signs["warnig"]["stop"]:
+    if traffic_signs["warning"]["stop"]:
         stop()
         time.sleep(2)
-        traffic_signs["warnig"]["stop"] = True
+        traffic_signs["warning"]["stop"] = True
 
 
 for side in ["left", "right", "forward", "back"]:
