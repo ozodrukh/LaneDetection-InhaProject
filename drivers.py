@@ -457,5 +457,5 @@ def main():
 
 
 if __name__ == "__main__":
-    on_road_detected('jkkj', -38.9)
+    # on_road_detected('jkkj', -38.9)
     pass
