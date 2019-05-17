@@ -4,24 +4,25 @@ import time
 from functools import partial as bind
 
 import cv2
-from gpiozero import DigitalInputDevice, Motor, DistanceSensor
 
 sensors = {
-    "ir": {
-        "left": DigitalInputDevice(12),
-        "right": DigitalInputDevice(16)
-    },
-    "tracer": {
-        "left": DigitalInputDevice(7),
-        "right": DigitalInputDevice(8)
-    },
-    #"distance": DistanceSensor(26, 19),
-    "motor": {
-        'left': Motor(18, 23),
-        'right': Motor(24, 25)
-    }
+    # "ir": {
+    #     "left": DigitalInputDevice(12),
+    #     "right": DigitalInputDevice(16)
+    # },
+    # "tracer": {
+    #     "left": DigitalInputDevice(7),
+    #     "right": DigitalInputDevice(8)
+    # },
+    # #"distance": DistanceSensor(26, 19),
+    # "motor": {
+    #     'left': Motor(18, 23),
+    #     'right': Motor(24, 25)
+    # }
 }
-motor_configs = {}
+motor_configs = {
+    # "forward.y": 0, "forward.x": 0
+}
 traffic_signs = {
     "warning": {
         "stop": False,
@@ -273,7 +274,7 @@ def left_parking_distance():
 
 def on_road_detected(direction, angel):
     print(direction, angel)
-
+    global motor_configs
     motor_configs["forward.y"] = 0.5
     motor_configs["forward.x"] = 0.5
     if angel is not None:
@@ -375,6 +376,7 @@ def on_road_detected(direction, angel):
                     motor_configs["forward.x"] = 0.5
         # border_detection()
         # obstacle_detection(angel)
+
     forward()
 
 
@@ -453,5 +455,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # max()
+    on_road_detected('jkkj', 16.3)
     pass
