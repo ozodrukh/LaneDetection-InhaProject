@@ -288,7 +288,7 @@ def on_road_detected(direction, angel):
         temp = angel
         angel = abs(angel)
         if (angel) < 63:
-            x = int(angel / 5 - 1) * 0.025
+            x = int(angel / 5 - 1) * 0.023
             motor_configs["forward.y"] = 1
             motor_configs["forward.x"] = x
         # if 15 < angel < 20:
