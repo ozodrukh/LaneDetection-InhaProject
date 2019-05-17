@@ -273,6 +273,7 @@ def left_parking_distance():
 
 def on_road_detected(direction, angel):
     print(direction, angel)
+
     motor_configs["forward.y"] = 0.5
     motor_configs["forward.x"] = 0.5
     if angel is not None:
