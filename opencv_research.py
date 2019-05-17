@@ -1,4 +1,4 @@
-from configs import LOCAL_MODE, GUI_MODE
+from configs import LOCAL_MODE, GUI_MODE, params
 
 import configs
 import cv2
@@ -16,34 +16,6 @@ size = configs.resize
 
 # camera.set(cv2.CAP_PROP_FRAME_WIDTH, size[0])
 # camera.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
-
-params = {
-    'paused': False,
-    'fps_counter': True,
-    'morph': 'gradient',
-    'kernel_width': 0,
-    'kernel_max_width': 0,
-    'kernel_height': 1,
-    'current_frame': None,
-}
-
-original_hough_params = {
-    'hough.rho': 1,
-    'hough.theta': np.pi / 180,
-    'hough.threshold': 100,
-    'hough.min_distance': 100,
-    'hough.max_line_gap': 50
-}
-
-modified_hough_params = {
-    'hough.rho': 1,
-    'hough.theta': np.pi / 180,
-    'hough.threshold': 75,
-    'hough.min_distance': 64,
-    'hough.max_line_gap': 60
-}
-
-params.update(modified_hough_params)
 
 LINE_COLOR_RANGE_LOWER = np.array([16, int(0.1 * 255), int(0.1 * 255)])
 LINE_COLOR_RANGE_HIGHER = np.array([35, int(1 * 255), int(0.6 * 255)])
@@ -127,7 +99,7 @@ def find_lines_using_contours(frame, morphed):
 
             cv2.drawContours(frame, contours, i, (20, int(255 * length / max_length), int(255 * length / max_length)))
 
-    t, a = route.find_lines_on_contours(frame, contours, lambda rect: rect[1][0] > 10)
+    t, a = route.find_lines_on_contours(frame, contours)
 
     direction["turn"] = t
     direction["angel"] = a

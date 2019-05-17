@@ -78,7 +78,7 @@ def angel2(x1, y1, x2, y2):
     return atan((y2 - y1) / (x2 - x1)) / pi * 180
 
 
-def find_lines_on_contours(frame, contours, filter_rect):
+def find_lines_on_contours(frame, contours):
     frame_size = (frame.shape[1], frame.shape[0])
     center_point = intify((frame_size[0] / 2, frame_size[1]))
 
@@ -89,7 +89,7 @@ def find_lines_on_contours(frame, contours, filter_rect):
     for i in range(len(contours)):
         rect = cv2.minAreaRect(contours[i])
 
-        if not filter_rect(rect):
+        if not (rect[1][0] > 10 or rect[1][1] > 15):
             continue
 
         bounds = get_bounds(contours[i])
@@ -115,9 +115,6 @@ def find_lines_on_contours(frame, contours, filter_rect):
             min_distance_point = bounds[0]
 
         line_point.append(min_distance_point)
-
-        if GUI_MODE:
-            cv2.line(frame, line_point[1], line_point[0], (255, 255, 255), 2)
 
         try:
             point = line_intersection([(center_point[0], 0), center_point], line_point)
@@ -192,9 +189,9 @@ def find_lines_on_contours(frame, contours, filter_rect):
 
     # cv2.line(frame, center_point, intify(rect[0]), (0, 255, 0), 1)
 
-    if target["angel"] > 0:
+    if 80 > target["angel"] > 0:
         turn = "left"
-    elif target["angel"] > -60:
+    elif 0 > target["angel"] > -70:
         turn = "right"
     else:
         turn = "straight"
