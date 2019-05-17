@@ -1,7 +1,7 @@
 from numpy import pi
 
 PRODUCTION_MODE = True
-LOCAL_MODE = False if PRODUCTION_MODE else True
+LOCAL_MODE = True  # False if PRODUCTION_MODE else True
 GUI_MODE = True
 
 resize = (300, 300)
@@ -9,7 +9,7 @@ resize = (300, 300)
 video_source = "/Users/ozz/Documents/Projects/opencv-py/data/outcpp.avi"
 camera_source = 0
 
-camera_target = video_source if LOCAL_MODE else camera_source
+camera_target = camera_source # video_source if LOCAL_MODE else camera_source
 
 if not PRODUCTION_MODE:
     single_image_source = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 5.24.50 PM.png"

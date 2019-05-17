@@ -368,7 +368,7 @@ DATA = {
 }
 
 if __name__ == "__main__":
-    if not configs.PRODUCTION_MODE or not configs.LOCAL_MODE:
+    if configs.PRODUCTION_MODE or configs.LOCAL_MODE:
         main()
     else:
         params['kernel_max_width'] = size[0]
