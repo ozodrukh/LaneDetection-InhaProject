@@ -314,18 +314,15 @@ def on_road_detected(direction, angel):
                     motor_configs["forward.x"] = 0.4
                 elif 65 > angel > 70:
                     motor_configs["forward.y"] = 0.6
-                    motor_configs["forward.x"] = 0.57
+                    motor_configs["forward.x"] = 0.5
                 elif 70 > angel > 75:
-                    motor_configs["forward.y"] = 0.57
-                    motor_configs["forward.x"] = 0.6
-                elif 75 > angel > 80:
-                    motor_configs["forward.y"] = 0.55
-                    motor_configs["forward.x"] = 0.6
-                elif 80 > angel > 90:
                     motor_configs["forward.y"] = 0.5
                     motor_configs["forward.x"] = 0.6
-                else:
-                    motor_configs["forward.y"] = 0.6
+                elif 75 > angel > 80:
+                    motor_configs["forward.y"] = 0.5
+                    motor_configs["forward.x"] = 0.6
+                elif 80 > angel > 90:
+                    motor_configs["forward.y"] = 0.4
                     motor_configs["forward.x"] = 0.6
             else:
                 if -15 > angel > -20:
@@ -359,11 +356,11 @@ def on_road_detected(direction, angel):
                     motor_configs["forward.y"] = 0.4
                     motor_configs["forward.x"] = 0.7
                 elif -65 > angel > -70:
-                    motor_configs["forward.y"] = 0.57
+                    motor_configs["forward.y"] = 0.5
                     motor_configs["forward.x"] = 0.6
                 elif -70 > angel > -75:
                     motor_configs["forward.y"] = 0.6
-                    motor_configs["forward.x"] = 0.57
+                    motor_configs["forward.x"] = 0.5
                 elif -75 > angel > -80:
                     motor_configs["forward.y"] = 0.6
                     motor_configs["forward.x"] = 0.5
@@ -373,9 +370,6 @@ def on_road_detected(direction, angel):
                 elif -85 > angel > -90:
                     motor_configs["forward.y"] = 0.6
                     motor_configs["forward.x"] = 0.4
-                else:
-                    motor_configs["forward.y"] = 0.5
-                    motor_configs["forward.x"] = 0.5
         # border_detection()
         # obstacle_detection(angel)
 
