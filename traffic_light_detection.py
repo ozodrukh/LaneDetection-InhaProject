@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-STUCTURE_KERNEL = (3, 3)
+DEFAULT_KERNEL = (3, 3)
 
 red = 0
 green = 65
@@ -12,7 +12,7 @@ red_upper = np.array([red + 10, 255, 255])
 green_lower = np.array([green - 10, 100, 100])
 green_upper = np.array([green + 10, 255, 255])
 
-kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, STUCTURE_KERNEL)
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, DEFAULT_KERNEL)
 
 
 def get_traffic_light_color(frame) -> str:
@@ -38,22 +38,5 @@ def get_traffic_light_color(frame) -> str:
 
     if red_black > 20000:
         return "red"
-
-    if green_black > 18000:
+    elif green_black > 18000:
         return "green"
-
-
-def main():
-    stream = cv2.VideoCapture(0)
-
-    while stream.isOpened():
-        _, current_frame = stream.read()
-        print(get_traffic_light_color(current_frame))
-
-    stream.release()
-
-
-cv2.destroyAllWindows()
-
-if __name__ == "__main__":
-    main()
