@@ -11,7 +11,7 @@ sensors = {
         "left": DigitalInputDevice(12),
         "right": DigitalInputDevice(16)
     },
-    "trace": {
+    "tracer": {
         "left": DigitalInputDevice(7),
         "right": DigitalInputDevice(8)
     },
