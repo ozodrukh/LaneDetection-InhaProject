@@ -338,10 +338,10 @@ def on_road_detected(direction, angel):
             motor_configs["forward.x"], motor_configs["forward.y"] = \
             motor_configs["forward.y"], motor_configs["forward.x"]
 
+    forward()
 
 # border_detection()
 # obstacle_detection(angel)
-forward()
 
 
 def main():
