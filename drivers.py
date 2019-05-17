@@ -4,6 +4,7 @@ import time
 from functools import partial as bind
 
 import cv2
+from gpiozero import DigitalInputDevice, Motor
 
 sensors = {
     "ir": {
