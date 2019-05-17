@@ -4,7 +4,7 @@ import time
 from functools import partial as bind
 
 import cv2
-from gpiozero import DigitalInputDevice, Motor
+from gpiozero import DigitalInputDevice, Motor, DistanceSensor
 
 sensors = {
     "ir": {
@@ -15,7 +15,7 @@ sensors = {
         "left": DigitalInputDevice(7),
         "right": DigitalInputDevice(8)
     },
-    # "distance": DistanceSensor(26, 19),
+    "distance": DistanceSensor(26, 19),
     "motor": {
         'left': Motor(18, 23),
         'right': Motor(24, 25)
