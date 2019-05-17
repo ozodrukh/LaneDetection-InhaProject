@@ -62,8 +62,6 @@ def classify_image(dilate, frame, i):
         rect = cv2.minAreaRect(con)
         box = np.int0(cv2.boxPoints(rect))
 
-        print([box])
-
         h1 = max([box][0][0][1], [box][0][1][1], [box][0][2][1], [box][0][3][1])
         h2 = min([box][0][0][1], [box][0][1][1], [box][0][2][1], [box][0][3][1])
         l1 = max([box][0][0][0], [box][0][1][0], [box][0][2][0], [box][0][3][0])
@@ -104,6 +102,6 @@ def has_similarities(cascade, gray, frame, i=0):
             i += 1
 
             if GUI_MODE:
-                cv2.imshow('detected color ' + str(i), roi_color)
+                cv2.imshow('found_color' + str(i), roi_color)
 
     return i

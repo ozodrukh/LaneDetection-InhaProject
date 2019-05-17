@@ -17,7 +17,7 @@ def get_bounds(cnt):
     return [leftmost, topmost, rightmost, bottommost]
 
 
-def intify(pt):
+def make_int(pt):
     return int(pt[0]), int(pt[1])
 
 
@@ -49,25 +49,27 @@ def line_intersection(line1, line2):
     y = det(d, ydiff) / div
     point = x, y
 
-    return point
-
-    # def lies_in(a, b, x):
-    #     if a[0] >= b[0]:
-    #         r1 = a[0] >= x[0] >= b[0]
-    #     else:
-    #         r1 = b[0] >= x[0] >= a[0]
-    #
-    #     if a[1] >= b[1]:
-    #         r2 = a[1] >= x[1] >= b[1]
-    #     else:
-    #         r2 = b[1] >= x[1] >= a[1]
-    #
-    #     return r1 and r2
     #
     # if lies_in(min(line1), max(line1), point) and lies_in(min(line2), max(line2), point):
     #     return point
     # else:
     #     raise Exception('lines do not intersect')
+
+    return point
+
+
+def lies_in(a, b, x):
+    if a[0] >= b[0]:
+        r1 = a[0] >= x[0] >= b[0]
+    else:
+        r1 = b[0] >= x[0] >= a[0]
+
+    if a[1] >= b[1]:
+        r2 = a[1] >= x[1] >= b[1]
+    else:
+        r2 = b[1] >= x[1] >= a[1]
+
+    return r1 and r2
 
 
 def angel(line):
@@ -80,7 +82,7 @@ def angel2(x1, y1, x2, y2):
 
 def find_lines_on_contours(frame, contours):
     frame_size = (frame.shape[1], frame.shape[0])
-    center_point = intify((frame_size[0] / 2, frame_size[1]))
+    center_point = make_int((frame_size[0] / 2, frame_size[1]))
 
     cv2.line(frame, center_point, (center_point[0], 0), (80, 80, 80), 2)
 
@@ -93,7 +95,7 @@ def find_lines_on_contours(frame, contours):
             continue
 
         bounds = get_bounds(contours[i])
-        rect_point = intify(bounds[3])
+        rect_point = make_int(bounds[3])
 
         d = distance(center_point, rect_point)
 
@@ -166,7 +168,7 @@ def find_lines_on_contours(frame, contours):
         return "straight", -70
 
     rect = target["bounds"]
-    rect_point = intify(target["line_point"][1])
+    rect_point = make_int(target["line_point"][1])
 
     if GUI_MODE:
         box = cv2.boxPoints(rect)
@@ -177,11 +179,11 @@ def find_lines_on_contours(frame, contours):
 
             cv2.line(frame, (x, y), (x1, y1), (0, 255, 0), 1)
 
-        cv2.line(frame, intify(center_point), intify(target["cross_point"]), (255, 255, 255), 5)
+        cv2.line(frame, make_int(center_point), make_int(target["cross_point"]), (255, 255, 255), 5)
 
         cv2.line(frame,
                  target["line_point"][0],
-                 intify(target["cross_point"]),
+                 make_int(target["cross_point"]),
                  (255, 255, 255),
                  5)
 
