@@ -333,13 +333,15 @@ def on_road_detected(direction, angel):
         elif 80 < angel < 90:
             motor_configs["forward.y"] = 0.8
             motor_configs["forward.x"] = 0.2
-
+        print(temp)
         if temp < 0:
-            motor_configs["forward.x"], motor_configs["forward.y"] = swap(motor_configs["forward.y"],
-                                                                          motor_configs["forward.x"])
-    # border_detection()
-    # obstacle_detection(angel)
-    forward()
+            motor_configs["forward.x"], motor_configs["forward.y"] = \
+            motor_configs["forward.y"], motor_configs["forward.x"]
+
+
+# border_detection()
+# obstacle_detection(angel)
+forward()
 
 
 def main():
