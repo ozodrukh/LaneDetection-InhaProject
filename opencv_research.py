@@ -7,7 +7,7 @@ import functools, route
 
 from datetime import datetime
 
-if configs.LOCAL_MODE and not configs.PRODUCTION_MODE:
+if configs.PRODUCTION_MODE or LOCAL_MODE == False:
     import drivers
 
 # sudo modprobe bcm2835-v4l2 # to enable camera on pi
@@ -77,11 +77,11 @@ def find_lines_using_contours(frame, morphed):
 
         if GUI_MODE:
             cv2.putText(frame,
-                    "No Contours",
-                    (int(size[0] / 2), 0),
-                    cv2.FONT_HERSHEY_PLAIN,
-                    1,
-                    (255, 255, 255))
+                        "No Contours",
+                        (int(size[0] / 2), 0),
+                        cv2.FONT_HERSHEY_PLAIN,
+                        1,
+                        (255, 255, 255))
         return
 
     if GUI_MODE:
@@ -177,11 +177,20 @@ def main():
     fps = 0
     current_fps = 0
 
+    video_output = None
+
+    if configs.CAPTURE_VIDEO:
+        fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+        video_output = cv2.VideoWriter('./session.avi', fourcc, 30.0, (640, 480))
+
     while camera.isOpened():
         _, frame = camera.read()
 
         if frame.size == 0:
             break
+
+        if configs.CAPTURE_VIDEO and video_output is not None:
+            video_output.write(frame)
 
         # frame = rotateImage(frame, -90)
         #
@@ -220,6 +229,9 @@ def main():
                     continue
         except KeyboardInterrupt:
             pass
+
+    if video_output is not None:
+        video_output.release()
 
     camera.release()
 

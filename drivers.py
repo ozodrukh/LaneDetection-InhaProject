@@ -15,7 +15,7 @@ sensors = {
         "left": DigitalInputDevice(7),
         "right": DigitalInputDevice(8)
     },
-    "distance": DistanceSensor(26, 19),
+    #"distance": DistanceSensor(26, 19),
     "motor": {
         'left': Motor(18, 23),
         'right': Motor(24, 25)
@@ -373,8 +373,8 @@ def on_road_detected(direction, angel):
                 else:
                     motor_configs["forward.y"] = 0.5
                     motor_configs["forward.x"] = 0.5
-        border_detection()
-        obstacle_detection(angel)
+        # border_detection()
+        # obstacle_detection(angel)
     forward()
 
 
