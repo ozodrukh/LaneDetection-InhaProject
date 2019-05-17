@@ -2,7 +2,7 @@ from numpy import pi
 
 PRODUCTION_MODE = True
 LOCAL_MODE = False if PRODUCTION_MODE else True
-GUI_MODE = LOCAL_MODE
+GUI_MODE = True
 
 resize = (300, 300)
 
