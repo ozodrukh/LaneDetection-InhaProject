@@ -1,8 +1,10 @@
 from numpy import pi
 
 PRODUCTION_MODE = True
+CAPTURE_VIDEO = True
 LOCAL_MODE = True  # False if PRODUCTION_MODE else True
 GUI_MODE = True
+
 
 resize = (300, 300)
 
