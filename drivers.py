@@ -23,7 +23,7 @@ sensors = {
 }
 motor_configs = {}
 traffic_signs = {
-    "warnig": {
+    "warning": {
         "stop": False,
         "pedestrian": False
     },
@@ -35,10 +35,10 @@ traffic_signs = {
 
 
 def traffic_signs_check():
-    if traffic_signs["warnig"]["stop"]:
+    if traffic_signs["warning"]["stop"]:
         stop()
         time.sleep(2)
-        traffic_signs["warnig"]["stop"] = True
+        traffic_signs["warning"]["stop"] = True
 
 
 for side in ["left", "right", "forward", "back"]:
@@ -303,11 +303,11 @@ def on_road_detected(direction, angel):
                     motor_configs["forward.y"] = 1
                     motor_configs["forward.x"] = 0.30
                 elif 55 > angel > 60:
-                    motor_configs["forward.y"] = 0.6
+                    motor_configs["forward.y"] = 0.8
                     motor_configs["forward.x"] = 0.4
                 elif 60 > angel > 65:
-                    motor_configs["forward.y"] = 0.6
-                    motor_configs["forward.x"] = 0.5
+                    motor_configs["forward.y"] = 0.7
+                    motor_configs["forward.x"] = 0.4
                 elif 65 > angel > 70:
                     motor_configs["forward.y"] = 0.6
                     motor_configs["forward.x"] = 0.57
@@ -349,11 +349,11 @@ def on_road_detected(direction, angel):
                     motor_configs["forward.y"] = 0.35
                     motor_configs["forward.x"] = 1
                 elif -55 > angel > -60:
-                    motor_configs["forward.y"] = 0.35
-                    motor_configs["forward.x"] = 0.6
+                    motor_configs["forward.y"] = 0.4
+                    motor_configs["forward.x"] = 0.8
                 elif -60 > angel > -65:
                     motor_configs["forward.y"] = 0.4
-                    motor_configs["forward.x"] = 0.6
+                    motor_configs["forward.x"] = 0.7
                 elif -65 > angel > -70:
                     motor_configs["forward.y"] = 0.57
                     motor_configs["forward.x"] = 0.6
