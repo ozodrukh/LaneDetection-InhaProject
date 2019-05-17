@@ -177,6 +177,8 @@ def main():
     fps = 0
     current_fps = 0
 
+    print(camera.get(cv2.CAP_PROP_FPS))
+
     while camera.isOpened():
         _, frame = camera.read()
 
@@ -229,7 +231,8 @@ def send_motor_signal():
         drivers.stop()
         return
 
-    drivers.on_road_detected(direction["turn"], direction["angel"])
+    if not LOCAL_MODE:
+        drivers.on_road_detected(direction["turn"], direction["angel"])
 
 
 def attach_options_bar():
