@@ -55,6 +55,7 @@ def get_distance():
 
 
 def forward():
+    global motor_configs
     left = motor_configs["forward.y"]
     right = motor_configs["forward.x"]
 
@@ -456,5 +457,5 @@ def main():
 
 
 if __name__ == "__main__":
-    on_road_detected('jkkj', 16.3)
+    on_road_detected('jkkj', -38.9)
     pass
