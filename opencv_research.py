@@ -237,6 +237,9 @@ def main():
 
 
 def send_motor_signal():
+    if not configs.PRODUCTION_MODE:
+        return
+
     if params["paused"]:
         drivers.stop()
         return

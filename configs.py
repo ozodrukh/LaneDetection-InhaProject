@@ -1,14 +1,14 @@
 from numpy import pi
 
 PRODUCTION_MODE = True
-CAPTURE_VIDEO = True
+CAPTURE_VIDEO = False
 LOCAL_MODE = True  # False if PRODUCTION_MODE else True
 GUI_MODE = True
 
 
 resize = (300, 300)
 
-video_source = "/Users/ozz/Documents/Projects/opencv-py/data/outcpp.avi"
+video_source = "/Users/ozz/Downloads/session2.avi"
 camera_source = 0
 
 camera_target = camera_source # video_source if LOCAL_MODE else camera_source
