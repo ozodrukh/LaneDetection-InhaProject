@@ -7,7 +7,7 @@ import functools, route
 
 from datetime import datetime
 
-if configs.LOCAL_MODE and not configs.PRODUCTION_MODE:
+if configs.PRODUCTION_MODE or LOCAL_MODE == False:
     import drivers
 
 # sudo modprobe bcm2835-v4l2 # to enable camera on pi
