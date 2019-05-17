@@ -1,6 +1,7 @@
 from numpy import pi
 
-LOCAL_MODE = True
+PRODUCTION_MODE = True
+LOCAL_MODE = False if PRODUCTION_MODE else True
 GUI_MODE = LOCAL_MODE
 
 resize = (300, 300)
@@ -10,8 +11,9 @@ camera_source = 0
 
 camera_target = video_source if LOCAL_MODE else camera_source
 
-single_image_source = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 5.24.50 PM.png"
-single_image_test = LOCAL_MODE and single_image_source is not None
+if not PRODUCTION_MODE:
+    single_image_source = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 5.24.50 PM.png"
+    single_image_test = LOCAL_MODE and single_image_source is not None
 
 params = {
     'paused': False,
