@@ -15,7 +15,7 @@ green_upper = np.array([green + 10, 255, 255])
 kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, DEFAULT_KERNEL)
 
 
-def get_traffic_light_color(frame) -> str:
+def get_traffic_light_color(frame, debug_values=False) -> str:
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     red_mask = cv2.inRange(hsv, red_lower, red_upper)
@@ -36,8 +36,9 @@ def get_traffic_light_color(frame) -> str:
     red_black = cv2.countNonZero(red_bw)
     green_black = cv2.countNonZero(green_bw)
 
-    print(red_black)
-    print(green_black)
+    if debug_values:
+        print(red_black)
+        print(green_black)
 
     if red_black > 500:
         return "red"
@@ -46,9 +47,19 @@ def get_traffic_light_color(frame) -> str:
 
 
 if __name__ == "__main__":
-    images = ["trafficLights.jpg", "trafficLightsRed.jpg", "traffic_light_green.jpg"]
+    import configs
 
-    for data in images:
-        frame = cv2.imread("data/" + data, cv2.IMREAD_COLOR)
-        frame = cv2.resize(frame, (300, 300))
-        print(get_traffic_light_color(frame))
+    if configs.camera_target == 0 and not configs.LOCAL_MODE:
+        camera = cv2.VideoCapture(configs.camera_target)
+
+        _, frame = camera.read()
+        print(get_traffic_light_color(frame, True))
+
+        camera.release()
+    else:
+        images = ["trafficLights.jpg", "trafficLightsRed.jpg", "traffic_light_green.jpg"]
+
+        for data in images:
+            frame = cv2.imread("data/" + data, cv2.IMREAD_COLOR)
+            frame = cv2.resize(frame, (300, 300))
+            print(get_traffic_light_color(frame))
