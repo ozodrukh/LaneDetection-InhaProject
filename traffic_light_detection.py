@@ -36,7 +36,19 @@ def get_traffic_light_color(frame) -> str:
     red_black = cv2.countNonZero(red_bw)
     green_black = cv2.countNonZero(green_bw)
 
-    if red_black > 20000:
+    print(red_black)
+    print(green_black)
+
+    if red_black > 500:
         return "red"
-    elif green_black > 18000:
+    elif green_black > 500:
         return "green"
+
+
+if __name__ == "__main__":
+    images = ["trafficLights.jpg", "trafficLightsRed.jpg", "traffic_light_green.jpg"]
+
+    for data in images:
+        frame = cv2.imread("data/" + data, cv2.IMREAD_COLOR)
+        frame = cv2.resize(frame, (300, 300))
+        print(get_traffic_light_color(frame))

@@ -10,7 +10,7 @@ camera_source = 0
 
 camera_target = video_source if LOCAL_MODE else camera_source
 
-single_image_source = "/Users/ozz/Desktop/Screen Shot 2019-05-15 at 5.24.50 PM.png"
+single_image_source = "/Users/ozz/Desktop/Screen Shot 2019-05-16 at 8.22.13 PM.png"
 single_image_test = LOCAL_MODE and single_image_source is not None
 
 params = {
