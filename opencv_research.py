@@ -1,4 +1,4 @@
-from configs import LOCAL_MODE, GUI_MODE
+from configs import LOCAL_MODE, GUI_MODE, params
 
 import configs
 import cv2
@@ -7,7 +7,7 @@ import functools, route
 
 from datetime import datetime
 
-if not LOCAL_MODE:
+if configs.PRODUCTION_MODE or LOCAL_MODE == False:
     import drivers
 
 # sudo modprobe bcm2835-v4l2 # to enable camera on pi
@@ -16,34 +16,6 @@ size = configs.resize
 
 # camera.set(cv2.CAP_PROP_FRAME_WIDTH, size[0])
 # camera.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
-
-params = {
-    'paused': False,
-    'fps_counter': True,
-    'morph': 'gradient',
-    'kernel_width': 0,
-    'kernel_max_width': 0,
-    'kernel_height': 1,
-    'current_frame': None,
-}
-
-original_hough_params = {
-    'hough.rho': 1,
-    'hough.theta': np.pi / 180,
-    'hough.threshold': 100,
-    'hough.min_distance': 100,
-    'hough.max_line_gap': 50
-}
-
-modified_hough_params = {
-    'hough.rho': 1,
-    'hough.theta': np.pi / 180,
-    'hough.threshold': 75,
-    'hough.min_distance': 64,
-    'hough.max_line_gap': 60
-}
-
-params.update(modified_hough_params)
 
 LINE_COLOR_RANGE_LOWER = np.array([16, int(0.1 * 255), int(0.1 * 255)])
 LINE_COLOR_RANGE_HIGHER = np.array([35, int(1 * 255), int(0.6 * 255)])
@@ -95,7 +67,7 @@ def render(frame):
 
 
 def find_lines_using_contours(frame, morphed):
-    if LOCAL_MODE:
+    if not configs.PRODUCTION_MODE:
         contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
     else:
         _, contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
@@ -105,11 +77,11 @@ def find_lines_using_contours(frame, morphed):
 
         if GUI_MODE:
             cv2.putText(frame,
-                    "No Contours",
-                    (int(size[0] / 2), 0),
-                    cv2.FONT_HERSHEY_PLAIN,
-                    1,
-                    (255, 255, 255))
+                        "No Contours",
+                        (int(size[0] / 2), 0),
+                        cv2.FONT_HERSHEY_PLAIN,
+                        1,
+                        (255, 255, 255))
         return
 
     if GUI_MODE:
@@ -127,7 +99,7 @@ def find_lines_using_contours(frame, morphed):
 
             cv2.drawContours(frame, contours, i, (20, int(255 * length / max_length), int(255 * length / max_length)))
 
-    t, a = route.find_lines_on_contours(frame, contours, lambda rect: rect[1][0] > 10)
+    t, a = route.find_lines_on_contours(frame, contours)
 
     direction["turn"] = t
     direction["angel"] = a
@@ -205,11 +177,20 @@ def main():
     fps = 0
     current_fps = 0
 
+    video_output = None
+
+    if configs.CAPTURE_VIDEO:
+        fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+        video_output = cv2.VideoWriter('./session.avi', fourcc, 30.0, (640, 480))
+
     while camera.isOpened():
         _, frame = camera.read()
 
         if frame.size == 0:
             break
+
+        if configs.CAPTURE_VIDEO and video_output is not None:
+            video_output.write(frame)
 
         # frame = rotateImage(frame, -90)
         #
@@ -249,10 +230,16 @@ def main():
         except KeyboardInterrupt:
             pass
 
+    if video_output is not None:
+        video_output.release()
+
     camera.release()
 
 
 def send_motor_signal():
+    if not configs.PRODUCTION_MODE:
+        return
+
     if params["paused"]:
         drivers.stop()
         return
@@ -396,7 +383,7 @@ DATA = {
 }
 
 if __name__ == "__main__":
-    if not configs.single_image_test:
+    if configs.PRODUCTION_MODE or configs.LOCAL_MODE:
         main()
     else:
         params['kernel_max_width'] = size[0]

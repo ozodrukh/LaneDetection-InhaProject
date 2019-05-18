@@ -1,10 +1,5 @@
 import numpy as np
-#import matplotlib
-#import matplotlib.pyplot as plt
-#import argparse
 import cv2
-import imutils
-import time
 
 # preliminary attempt at lane following system
 # largely derived from: https://medium.com/pharos-production/
@@ -14,7 +9,7 @@ import time
 cap = cv2.VideoCapture('/Users/ozz/Documents/Projects/opencv-py/data/outcpp.avi')
 
 # loop through until entire video file is played
-while(cap.isOpened()):
+while (cap.isOpened()):
 
     # read video frame & show on screen
     ret, frame = cap.read()
@@ -32,8 +27,8 @@ while(cap.isOpened()):
 
     frame = frame[bounds[0]:bounds[2], bounds[1]:bounds[3]]
 
-    snip = frame#[500:700,300:900]
-    cv2.imshow("Snip",snip)
+    snip = frame  # [500:700,300:900]
+    cv2.imshow("Snip", snip)
 
     # create polygon (trapezoid) mask to select region of interest
     mask = np.zeros((snip.shape[0], snip.shape[1]), dtype="uint8")
@@ -78,7 +73,7 @@ while(cap.isOpened()):
             for rho, theta in lines[i]:
 
                 # collect left lanes
-                if theta < np.pi/2 and theta > np.pi/4:
+                if theta < np.pi / 2 and theta > np.pi / 4:
                     rho_left.append(rho)
                     theta_left.append(theta)
 
@@ -91,7 +86,7 @@ while(cap.isOpened()):
                     # cv2.line(snip, (x1, y1), (x2, y2), (0, 0, 255), 1)
 
                 # collect right lanes
-                if theta > np.pi/2 and theta < 3*np.pi/4:
+                if theta > np.pi / 2 and theta < 3 * np.pi / 4:
                     rho_right.append(rho)
                     theta_right.append(theta)
 
@@ -110,28 +105,36 @@ while(cap.isOpened()):
     right_theta = np.median(theta_right)
 
     # plot median lane on top of scene snip
-    if left_theta > np.pi/4:
-        a = np.cos(left_theta); b = np.sin(left_theta)
-        x0 = a * left_rho; y0 = b * left_rho
-        offset1 = 250; offset2 = 800
-        x1 = int(x0 - offset1 * (-b)); y1 = int(y0 - offset1 * (a))
-        x2 = int(x0 + offset2 * (-b)); y2 = int(y0 + offset2 * (a))
+    if left_theta > np.pi / 4:
+        a = np.cos(left_theta);
+        b = np.sin(left_theta)
+        x0 = a * left_rho;
+        y0 = b * left_rho
+        offset1 = 250;
+        offset2 = 800
+        x1 = int(x0 - offset1 * (-b));
+        y1 = int(y0 - offset1 * (a))
+        x2 = int(x0 + offset2 * (-b));
+        y2 = int(y0 + offset2 * (a))
 
         cv2.line(snip, (x1, y1), (x2, y2), (0, 255, 0), 6)
 
-    if right_theta > np.pi/4:
-        a = np.cos(right_theta); b = np.sin(right_theta)
-        x0 = a * right_rho; y0 = b * right_rho
-        offset1 = 290; offset2 = 800
-        x3 = int(x0 - offset1 * (-b)); y3 = int(y0 - offset1 * (a))
-        x4 = int(x0 - offset2 * (-b)); y4 = int(y0 - offset2 * (a))
+    if right_theta > np.pi / 4:
+        a = np.cos(right_theta);
+        b = np.sin(right_theta)
+        x0 = a * right_rho;
+        y0 = b * right_rho
+        offset1 = 290;
+        offset2 = 800
+        x3 = int(x0 - offset1 * (-b));
+        y3 = int(y0 - offset1 * (a))
+        x4 = int(x0 - offset2 * (-b));
+        y4 = int(y0 - offset2 * (a))
 
         cv2.line(snip, (x3, y3), (x4, y4), (255, 0, 0), 6)
 
-
-
     # overlay semi-transparent lane outline on original
-    if left_theta > np.pi/4 and right_theta > np.pi/4:
+    if left_theta > np.pi / 4 and right_theta > np.pi / 4:
         pts = np.array([[x1, y1], [x2, y2], [x3, y3], [x4, y4]], dtype=np.int32)
 
         # (1) create a copy of the original:
@@ -144,13 +147,11 @@ while(cap.isOpened()):
 
     cv2.imshow("Lined", snip)
 
-
     # perform probablistic Hough Transform to identify lane lines
     # lines = cv2.HoughLinesP(edged, 1, np.pi / 180, 20, 2, 1)
     # for x in range(0, len(lines)):
     #     for x1, y1, x2, y2 in lines[x]:
     #         cv2.line(snip, (x1, y1), (x2, y2), (0, 0, 255), 2)
-
 
     # press the q key to break out of video
     if cv2.waitKey(25) & 0xFF == ord('q'):
