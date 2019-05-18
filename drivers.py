@@ -280,23 +280,28 @@ def on_road_detected(direction, angel):
     print(direction, angel)
 
     global motor_configs
-
-    motor_configs["forward.y"] = 0.5
-    motor_configs["forward.x"] = 0.5
+    # left_dodge()
+    persen=0.8
+    motor_configs["forward.y"] = 0.8*persen
+    motor_configs["forward.x"] = 0.3
     if angel is not None:
         # if abs(angel) < 90:
         temp = angel
         angel = abs(angel)
         if (angel) < 63:
-            x = int(angel / 5 - 1) * 0.025
+            x = int(angel / 5 - 1) * 0.018*persen
             motor_configs["forward.y"] = 1
             motor_configs["forward.x"] = x
-        # if 15 < angel < 20:
-        #     motor_configs["forward.y"] = 1
-        #     motor_configs["forward.x"] = 0.06
-        # elif 20 < angel < 25:
-        #     motor_configs["forward.y"] = 1
-        #     motor_configs["forward.x"] = 0.09
+        if (angel) < 40:
+            x = int(angel / 5 - 2) * 0.006*persen
+            motor_configs["forward.y"] = 1
+            motor_configs["forward.x"] = x
+        if (angel) < 28:
+            x = int(angel / 5 - 2) * 0.005*persen
+            if x<0:
+                x=0.02
+            motor_configs["forward.y"] = 1
+            motor_configs["forward.x"] = x
         # elif 25 < angel < 30:
         #     motor_configs["forward.y"] = 1
         #     motor_configs["forward.x"] = 0.13
@@ -318,27 +323,30 @@ def on_road_detected(direction, angel):
         # elif 55 < angel < 60:
         #     motor_configs["forward.y"] = 1
         #     motor_configs["forward.x"] = 0.35
+
         elif 63 < angel < 65:
             motor_configs["forward.y"] = 0.5
             motor_configs["forward.x"] = 0.5
         elif 65 < angel < 70:
-            motor_configs["forward.y"] = 0.9
-            motor_configs["forward.x"] = 0.35
-        elif 70 < angel < 75:
-            motor_configs["forward.y"] = 0.9
-            motor_configs["forward.x"] = 0.3
-        elif 75 < angel < 80:
-            motor_configs["forward.y"] = 0.9
+            motor_configs["forward.y"] = 1
             motor_configs["forward.x"] = 0.25
+        elif 70 < angel < 75:
+            motor_configs["forward.y"] = 1
+            motor_configs["forward.x"] = 0.23
+        elif 75 < angel < 80:
+            motor_configs["forward.y"] = 1
+            motor_configs["forward.x"] = 0.21
         elif 80 < angel < 90:
-            motor_configs["forward.y"] = 0.8
-            motor_configs["forward.x"] = 0.2
+            motor_configs["forward.y"] = 1
+            motor_configs["forward.x"] = 0.19
         # print(temp)
         if temp < 0:
             motor_configs["forward.x"], motor_configs["forward.y"] = \
-            motor_configs["forward.y"], motor_configs["forward.x"]
-
+                motor_configs["forward.y"], motor_configs["forward.x"]
+        if sensors["ir"]["left"]==1:
+            left_dodge()
     forward()
+
 
 # border_detection()
 # obstacle_detection(angel)
