@@ -282,6 +282,7 @@ def on_road_detected(direction, angel):
     global motor_configs
     # left_dodge()
     persen = 0.8
+    power=1.5
     motor_configs["forward.y"] = 0.8
     motor_configs["forward.x"] = 0.3
     if angel is not None:
@@ -340,14 +341,15 @@ def on_road_detected(direction, angel):
             motor_configs["forward.y"] = 1
             motor_configs["forward.x"] = 0.19
         # print(temp)
-        if temp < 0:
-            motor_configs["forward.x"], motor_configs["forward.y"] = \
-                motor_configs["forward.y"], motor_configs["forward.x"]
+
         if sensors["ir"]["left"] == 1:
             left_dodge()
 
-    motor_configs["forward.y"] = motor_configs["forward.y"] * persen
-    motor_configs["forward.x"] = motor_configs["forward.x"] * persen
+        motor_configs["forward.y"] = motor_configs["forward.y"] * persen
+        motor_configs["forward.x"] = motor_configs["forward.x"] * persen*power
+        if temp < 0:
+            motor_configs["forward.x"], motor_configs["forward.y"] = \
+                motor_configs["forward.y"], motor_configs["forward.x"]
     forward()
 
 
