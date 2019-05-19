@@ -67,7 +67,10 @@ def render(frame):
 
 
 def find_lines_using_contours(frame, morphed):
-    contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
+    if not configs.PRODUCTION_MODE:
+        contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
+    else:
+        _, contours, _ = cv2.findContours(morphed, cv2.CHAIN_APPROX_SIMPLE, cv2.RETR_TREE)
 
     if contours is None:
         print("no contours")
