@@ -1,6 +1,5 @@
 import datetime
 import os
-import time
 from functools import partial as bind
 
 import cv2
@@ -23,7 +22,6 @@ sensors = {
 }
 
 motor_configs = {}
-
 
 for side in ["left", "right", "forward", "back"]:
     motor_configs[side + ".x"] = 1
@@ -54,97 +52,9 @@ def back():
     sensors["motor"]["right"].backward(right)
 
 
-def turn_left():
-    x = motor_configs["left.x"]
-    y = motor_configs["left.y"]
-
-    sensors["motor"]["left"].forward(x)
-    sensors["motor"]["right"].backward(y)
-
-
-def turn_right():
-    x = motor_configs["right.x"]
-    y = motor_configs["right.y"]
-
-    sensors["motor"]["left"].backward(x)
-    sensors["motor"]["right"].forward(y)
-
-
 def stop():
     sensors["motor"]["left"].stop()
     sensors["motor"]["right"].stop()
-
-
-def right_quarter_turn():
-    motor_configs["right.y"] = 1
-    motor_configs["right.x"] = 0.5
-    turn_right()
-    time.sleep(0.6)
-
-
-def left_quarter_turn():
-    motor_configs["left.y"] = 1
-    motor_configs["left.x"] = 0.5
-    turn_left()
-    time.sleep(0.6)
-
-
-def slight_forward():
-    motor_configs["forward.y"] = 1
-    motor_configs["forward.x"] = 1
-    forward()
-    time.sleep(0.4)
-
-
-def light_forward():
-    motor_configs["forward.y"] = 1
-    motor_configs["forward.x"] = 1
-    forward()
-    time.sleep(1)
-
-
-def right_dodge():
-    right_quarter_turn()
-    slight_forward()
-    left_quarter_turn()
-    light_forward()
-    left_quarter_turn()
-    slight_forward()
-    right_quarter_turn()
-
-
-def left_dodge():
-    left_quarter_turn()
-    slight_forward()
-    right_quarter_turn()
-    light_forward()
-    right_quarter_turn()
-    slight_forward()
-    left_quarter_turn()
-
-
-def right_dodge2():
-    motor_configs["forward.y"] = 0.25
-    motor_configs["forward.x"] = 1
-    forward()
-    time.sleep(0.25)
-    motor_configs["forward.y"] = 1
-    motor_configs["forward.x"] = 0.25
-    forward()
-    time.sleep(0.25)
-    motor_configs["forward.y"] = 0.6
-    motor_configs["forward.x"] = 0.6
-    forward()
-    time.sleep(0.4)
-    motor_configs["forward.y"] = 1
-    motor_configs["forward.x"] = 0.35
-    forward()
-    time.sleep(0.4)
-    motor_configs["forward.y"] = 0.35
-    motor_configs["forward.x"] = 1
-    forward()
-    time.sleep(0.4)
-    stop()
 
 
 def lIRsensor():
@@ -173,7 +83,7 @@ def on_road_detected(direction, angel):
     global motor_configs
     # left_dodge()
     persen = 0.8
-    power=1.5
+    power = 1.5
     motor_configs["forward.y"] = 0.8
     motor_configs["forward.x"] = 0.3
     if angel is not None:
@@ -212,11 +122,8 @@ def on_road_detected(direction, angel):
             motor_configs["forward.x"] = 0.19
         # print(temp)
 
-        if sensors["ir"]["left"] == 1:
-            left_dodge()
-
         motor_configs["forward.y"] = motor_configs["forward.y"] * persen
-        motor_configs["forward.x"] = motor_configs["forward.x"] * persen*power
+        motor_configs["forward.x"] = motor_configs["forward.x"] * persen * power
         if temp < 0:
             motor_configs["forward.x"], motor_configs["forward.y"] = \
                 motor_configs["forward.y"], motor_configs["forward.x"]
@@ -238,9 +145,9 @@ def main():
     allowed = {
         ord("w"): forward,
         ord("s"): back,
-        ord("a"): turn_left,
-        ord("d"): turn_right,
-        ord("f"): stop
+        # ord("a"): turn_left,
+        # ord("d"): turn_right,
+        # ord("f"): stop
     }
 
     print("Allowed only: {}".format(allowed.keys()))
