@@ -23,23 +23,6 @@ sensors = {
 }
 
 motor_configs = {}
-traffic_signs = {
-    "warning": {
-        "stop": False,
-        "pedestrian": False
-    },
-    "indication": {
-        "forward": False, "turn left": False,
-        "turn right": False, "Circle Line": False
-    }
-}
-
-
-def traffic_signs_check():
-    if traffic_signs["warning"]["stop"]:
-        stop()
-        time.sleep(2)
-        traffic_signs["warning"]["stop"] = True
 
 
 for side in ["left", "right", "forward", "back"]:
@@ -180,98 +163,6 @@ def lIRTracerSensor():
     return sensors["trace"]["left"].value
 
 
-def border_detection():
-    if sensors["tracer"]["left"].value == 1 and motor_configs["forward.x"] < 0.9:
-        motor_configs["forward.x"] += 0.1
-
-    if sensors["tracer"]["right"].value == 1 and motor_configs["forward.y"] < 0.9:
-        motor_configs["forward.y"] += 0.1
-
-
-def side_dodge():
-    if lIRsensor():
-        right_dodge()
-    elif rIRsensor:
-        right_dodge()
-
-
-def obstacle_detection(angel):
-    if get_distance() > 10:
-        return
-    elif get_distance() < 0.10 and (angel > 60):
-        stop()
-    elif get_distance() < 0.10 and angel is None:
-        side_dodge()
-        stop()
-
-    # forward()
-
-
-def left_parking():
-    if get_distance() < 0.25:
-        motor_configs["forward.y"] = 1
-        motor_configs["forward.x"] = 1
-        forward()
-        time.sleep(0.1)
-        motor_configs["forward.y"] = 1
-        motor_configs["forward.x"] = 0.23
-        forward()
-        time.sleep(1.5)
-        stop()
-        time.sleep(5)
-
-
-def right_parking():
-    if get_distance() < 0.25:
-        motor_configs["forward.y"] = 1
-        motor_configs["forward.x"] = 1
-        forward()
-        time.sleep(0.1)
-        motor_configs["forward.y"] = 0.23
-        motor_configs["forward.x"] = 1
-        forward()
-        time.sleep(1.5)
-        stop()
-        time.sleep(5)
-
-
-def right_parking_distance():
-    if get_distance() < 0.25:
-        motor_configs["forward.y"] = 1
-        motor_configs["forward.x"] = 1
-        forward()
-        time.sleep(0.1)
-        motor_configs["forward.y"] = 0.23
-        motor_configs["forward.x"] = 1
-        forward()
-        time.sleep(1.5)
-        stop()
-        time.sleep(5)
-
-
-def slowdown():
-    for i in 5:
-        temp = (0.51 - (i / 10))
-        motor_configs["forward.y"] = temp
-        motor_configs["forward.x"] = temp
-        time.sleep(0.1)
-        forward()
-
-
-def left_parking_distance():
-    if get_distance() < 0.25:
-        motor_configs["forward.y"] = 1
-        motor_configs["forward.x"] = 1
-        forward()
-        time.sleep(0.1)
-        motor_configs["forward.y"] = 1
-        motor_configs["forward.x"] = 0.23
-        forward()
-        time.sleep(1.5)
-        stop()
-        time.sleep(5)
-
-
 def swap(param, param1):
     return param1, param
 
@@ -303,27 +194,6 @@ def on_road_detected(direction, angel):
                 x = 0.02
             motor_configs["forward.y"] = 1
             motor_configs["forward.x"] = x
-        # elif 25 < angel < 30:
-        #     motor_configs["forward.y"] = 1
-        #     motor_configs["forward.x"] = 0.13
-        # elif 30 < angel < 35:
-        #     motor_configs["forward.y"] = 1
-        #     motor_configs["forward.x"] = 0.16
-        # elif 35 < angel < 40:
-        #     motor_configs["forward.y"] = 1
-        #     motor_configs["forward.x"] = 0.19
-        # elif 40 < angel < 45:
-        #     motor_configs["forward.y"] = 1
-        #     motor_configs["forward.x"] = 0.22
-        # elif 45 < angel < 50:
-        #     motor_configs["forward.y"] = 1
-        #     motor_configs["forward.x"] = 0.25
-        # elif 50 < angel < 55:
-        #     motor_configs["forward.y"] = 1
-        #     motor_configs["forward.x"] = 0.30
-        # elif 55 < angel < 60:
-        #     motor_configs["forward.y"] = 1
-        #     motor_configs["forward.x"] = 0.35
 
         elif 63 < angel < 65:
             motor_configs["forward.y"] = 0.5

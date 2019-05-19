@@ -14,9 +14,6 @@ if configs.PRODUCTION_MODE or LOCAL_MODE == False:
 
 size = configs.resize
 
-# camera.set(cv2.CAP_PROP_FRAME_WIDTH, size[0])
-# camera.set(cv2.CAP_PROP_FRAME_HEIGHT, size[1])
-
 LINE_COLOR_RANGE_LOWER = np.array([16, int(0.1 * 255), int(0.1 * 255)])
 LINE_COLOR_RANGE_HIGHER = np.array([35, int(1 * 255), int(0.6 * 255)])
 
